@@ -10,7 +10,7 @@ File to Calculate the Potential Evapotranspiration (ETP) and the Standardized Pr
 
     Calculation of SPEI based on Wang et al., 2021
 
-Author: Luca Boestfleisch 
+Author: Luca Boestfleisch, based on the above ETP calculation and SPEI calculation from Vicente-Serrano et al., 2010, and Wang et al., 2021
 Date last updated: 20.03.2024
 """
 import numpy as np
@@ -35,9 +35,9 @@ Note: everything that needs to be adapted between runs, is marked with the comme
 
 
 "STEP 0: Importing all the file paths"
-tmax_nc_path = "C:/03_Capstone/Data/Future/ssp126/tasmax/ssp126_tasmax_C_2015-2100_EPSG3034.nc" #############   ADAPT HERE!!
-tmin_nc_path = "C:/03_Capstone/Data/Future/ssp126/tasmin/ssp126_tasmin_C_2015-2100_EPSG3034.nc" #############   ADAPT HERE!!
-precipitation_file = "C:/03_Capstone/Data/Future/ssp126/pr/ssp126_pr_mm_2015-2100_EPSG3034.nc" #############     ADAPT HERE!! 
+tmax_nc_path = "" #adapt 
+tmin_nc_path = "" #adapt 
+precipitation_file = "" #adapt 
 tmax_nc = Dataset(tmax_nc_path, 'r')
 tmin_nc = Dataset(tmin_nc_path, 'r')
 pr_data = Dataset(precipitation_file, 'r')
@@ -74,57 +74,57 @@ Array_spei = np.zeros((all_days, lon_length, lat_length), dtype=np.float32)
 
 # #####################################################################################################
 
-# "STEP 1: Calculating the ETP"
-# for t in range(all_days):
-#     for j in range(lon_length):
-#         for i in range(lat_length):
-#             tmax = tmax_nc.variables['tasmax'][t, j, i]
-#             tmin = tmin_nc.variables['tasmin'][t, j, i]
+"STEP 1: Calculating the ETP"
+for t in range(all_days):
+    for j in range(lon_length):
+        for i in range(lat_length):
+            tmax = tmax_nc.variables['tasmax'][t, j, i]
+            tmin = tmin_nc.variables['tasmin'][t, j, i]
 
-#             # potential evapotransp iration formula McCloud 1955, (Xiang et al., 2020)
-#             ta = 0.5 * (tmax + tmin) 
-#             etp = 0.254 * (1.07**(1.8 * ta))
-#             Array_etp[t, j, i] = etp
-#     print(f"ETP Time step: {t}/{all_days}")
-
-
-# """saving the file"""            
-# output_directory_etp = "C:/03_Capstone/Data/Future/ssp126/run1_200324" #############   ADAPT HERE!!
-# output_file_etp = "ssp126_etp_2015-2100.nc"#############   ADAPT HERE!! 
-# var = "etp"#############   ADAPT HERE!!
+            # potential evapotransp iration formula McCloud 1955, (Xiang et al., 2020)
+            ta = 0.5 * (tmax + tmin) 
+            etp = 0.254 * (1.07**(1.8 * ta))
+            Array_etp[t, j, i] = etp
+    print(f"ETP Time step: {t}/{all_days}")
 
 
-# with Dataset(os.path.join(output_directory_etp, output_file_etp), 'w', format='NETCDF4') as ds:
-#     time = ds.createDimension('time', all_days)
-#     lon = ds.createDimension('lon', lon_length)  
-#     lat = ds.createDimension('lat', lat_length)  
+"""saving the file"""            
+output_directory_etp = "" #adapt 
+output_file_etp = "" #adapt 
+var = "etp" #adapt 
 
-#     times = ds.createVariable('time', 'f4', ('time',))
-#     lons = ds.createVariable('lon', 'f4', ('lon',))  
-#     lats = ds.createVariable('lat', 'f4', ('lat',)) 
-#     value = ds.createVariable(var, 'f4', ('time', 'lon', 'lat'))  
 
-#     value.units = 'Unknown'
+with Dataset(os.path.join(output_directory_etp, output_file_etp), 'w', format='NETCDF4') as ds:
+    time = ds.createDimension('time', all_days)
+    lon = ds.createDimension('lon', lon_length)  
+    lat = ds.createDimension('lat', lat_length)  
 
-#     lons[:] = np.linspace(lon_min, lon_max, lon_length)
-#     lats[:] = np.linspace(lat_min, lat_max, lat_length)
-#     times[:] = np.arange(0, all_days, 1)
+    times = ds.createVariable('time', 'f4', ('time',))
+    lons = ds.createVariable('lon', 'f4', ('lon',))  
+    lats = ds.createVariable('lat', 'f4', ('lat',)) 
+    value = ds.createVariable(var, 'f4', ('time', 'lon', 'lat'))  
 
-#     value[:, :, :] = Array_etp
+    value.units = 'Unknown'
 
-# print("ETP file successfully calculated and saved!")
+    lons[:] = np.linspace(lon_min, lon_max, lon_length)
+    lats[:] = np.linspace(lat_min, lat_max, lat_length)
+    times[:] = np.arange(0, all_days, 1)
+
+    value[:, :, :] = Array_etp
+
+print("ETP file successfully calculated and saved!")
 
 # #####################################################################################################
 
 "STEP 2: Calculating the water balance Di"
-pet_file = "C:/03_Capstone/Data/Future/ssp126/run1_200324/ssp126_etp_2015-2100.nc"  #############     ADAPT HERE!! 
+pet_file = ""  #adapt 
 pet_data = Dataset(pet_file, 'r')
 
 for t in range(all_days):  
     for j in range(lon_length):
         for i in range(lat_length):
-            pr_var = pr_data.variables['pr'][t, j, i] #############     ADAPT HERE (variable name if necessray)!!
-            pet_var = pet_data.variables['etp'][t, j, i] ############     ADAPT HERE (variable name if necessray)!!
+            pr_var = pr_data.variables['pr'][t, j, i] #adapt 
+            pet_var = pet_data.variables['etp'][t, j, i] ##adapt 
             
             #Water balance Di
             di= pr_var - pet_var
@@ -132,9 +132,9 @@ for t in range(all_days):
 
     print(f"Di, Time step: {t}/{all_days}")
 
-output_directory = "C:/03_Capstone/Data/Future/ssp126/run1_200324/" #############     ADAPT HERE!!
-output_file = "ssp126_di_2015-2100.nc" #############     ADAPT HERE!!
-var = "di" 
+output_directory = "" #adapt 
+output_file = "" #adapt 
+var = "di" #adapt 
 
 with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4') as ds:
     time = ds.createDimension('time', all_days)
@@ -159,7 +159,7 @@ with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4')
 
 "STEP 3: Accumulated Waterbalance (Dk) for the time period k"
 
-Di_file = "C:/03_Capstone/Data/Future/ssp126/run1_200324/ssp126_di_2015-2100.nc" #############     ADAPT HERE!!
+Di_file = "" #adapt 
 Di_data = Dataset(Di_file, 'r')
 # print(Di_data.variables['Di'].shape) #for a check, but not necessary 
 
@@ -183,9 +183,9 @@ for t in range(all_days):
     print(f"Dk, Time step: {t}/{len(time)}")
             
                
-output_directory = "C:/03_Capstone/Data/Future/ssp126/run1_200324/" #############     ADAPT HERE!!
-output_file = "ssp126_dk_2015-2100.nc"#############     ADAPT HERE!!
-var = "dk" #############     ADAPT HERE!!
+output_directory = "" #adapt 
+output_file = "" #adapt 
+var = "dk" #adapt 
 
 "Saving the file "
 with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4') as ds:
@@ -281,9 +281,9 @@ for t in range(all_days):
     print(f"spei, Time step: day {t}")
 
 "Saving the spei data"
-output_directory = "C:/03_Capstone/Data/Future/ssp126/run1_200324/" #############     ADAPT HERE!!
-output_file = "ssp126_spei_2015-2100_obsgevpara.nc" #############     ADAPT HERE!!
-var = "spei" #############     ADAPT HERE!!
+output_directory = "" #adapt 
+output_file = "" #adapt 
+var = "spei" #adapt 
 with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4') as ds:
     time = ds.createDimension('time', all_days)
     lon = ds.createDimension('lon', lon_length)  
