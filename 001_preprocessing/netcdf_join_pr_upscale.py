@@ -1,8 +1,14 @@
-"""the version of this code is from:12.03.2024
-editing this file so that it is for the precipitation in Brandenburg for the years 1991-2020
-The data is downloaded from: https://opendata.dwd.de/climate_environment/CDC/grids_germany/daily/hyras_de/precipitation/
-It is the HYRAS Precipitation data
-the file uses a ETRS89 LCC EUROPE (EPSG3034) projection"""
+"""
+purpose: Join the NetCDF files and linear upscaling of the precipitation data of the HYRAS data project
+last updated: 12.03.2024
+author: parts of this code were provided by Joeri Reinders, and then adopted by Luca Boestfleisch 
+
+extra details: 
+    the precipitation dataset needs to be upscaled (decreasing spatial resolution) because it is currently at a 1km resolution, yet all other files are at 5km resolution 
+    NetCDF observational precipitation data downloaded from the 'Deutscher Wetterdienst' from the HYRAS data project
+    projection: ETRS89 LCC EUROPE (EPSG3034) 
+
+"""
 import os
 import numpy as np
 from netCDF4 import Dataset

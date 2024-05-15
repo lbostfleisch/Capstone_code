@@ -1,7 +1,9 @@
 """"
-converting the tas files: from K to C
+purpose: converting the tas files: from K to C
 Author: Luca Boestfleisch 
-Date: 12.03.2024
+last accessed: 12.03.2024
+
+note: the comment 'adapt' requires specifying a filepath or similar 
 """
 import xarray as xr
 import matplotlib.pyplot as plt
@@ -9,12 +11,12 @@ import os
 from netCDF4 import Dataset
 import numpy as np
 
-temp_file = "C:/03_Capstone/Data/Future/ssp126/tasmin/ssp126_tasmin_2015-2100_EPSG3034.nc"  #############     ADAPT HERE!! 
+temp_file = ""  #adapt 
 temp_data = Dataset(temp_file, 'r')
 all_days = 31411
 #16435 past 
 #31411 future 
-var = "tasmin"
+var = "tasmin" #adapt 
 lon_max = 4323286.0
 lon_min =  4028021.5  
 lat_max = 3023612.5
@@ -37,7 +39,7 @@ lon = temp_data.variables['lon'][:]
 lat = temp_data.variables['lat'][:]
 time = temp_data.variables['time'][:]
 nt, nlons, nlats = len(time), len(lon), len(lat)
-Array = np.zeros((all_days, lon_length, lat_length), dtype=np.float32) #############     ADAPT HERE (lon/lat if necessray)!! 
+Array = np.zeros((all_days, lon_length, lat_length), dtype=np.float32)  
 
 
 for t in range(all_days):  
@@ -52,8 +54,8 @@ for t in range(all_days):
 
 
 """Create a new netCDF file"""
-output_directory = "C:/03_Capstone/Data/Future/ssp126/tasmin"
-output_file = "ssp126_tasmin_C_2015-2100_EPSG3034.nc"
+output_directory = ""  #adapt 
+output_file = "" #adapt 
 
 with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4') as ds:
     time = ds.createDimension('time', all_days)

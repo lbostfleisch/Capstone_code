@@ -1,8 +1,14 @@
-"""the version of this code is from:03.01.2024
-editing this file so that it is for the precipitation in Brandenburg for the years 1991-2020
-The data is downloaded from: https://opendata.dwd.de/climate_environment/CDC/grids_germany/daily/hyras_de/precipitation/
-It is the HYRAS Precipitation data
-the file uses a ETRS89 LCC EUROPE (EPSG3034) projection"""
+"""
+purpose: code for the joining of yealy NetCDF files 
+last updated: 11.03.2024
+author: code provided by Joeri Reinders, and adopted by Luca Boestfleisch
+
+extra details: 
+    NetCDF data downloaded from the 'Deutscher Wetterdienst' from the HYRAS data project 
+    projection: ETRS89 LCC EUROPE (EPSG3034) 
+
+"""
+
 import os
 import numpy as np
 from netCDF4 import Dataset
