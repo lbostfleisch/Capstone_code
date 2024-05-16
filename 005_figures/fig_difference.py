@@ -1,4 +1,8 @@
-"trying 8 with dif sources"
+"""
+purpose: to plot the difference figures of the mean and top 1% SPEI values (separately)
+
+author: Luca Boestfleisch 
+"""
 import os
 import xarray as xr
 import matplotlib.pyplot as plt
@@ -22,21 +26,19 @@ file_info = [
 
 ]
 
-# Define the number of rows and columns for subplots
+"define the different amount of desired subplots"
 num_rows = 2
 num_cols = 3
-
-# Create the figure and axes
 fig, axes = plt.subplots(num_rows, num_cols, figsize=(15, 10))
 
-# Flatten the axes array for easier iteration
 axes = axes.flatten()
-# norm = plt.Normalize(-3, 3)
-sm = plt.cm.ScalarMappable(cmap="bwr_r")
-sm.set_array([])  # Dummy array needed for ScalarMappable
+sm = plt.cm.ScalarMappable(cmap="bwr_r") #adjust the color map if necessary 
+sm.set_array([])  
+'set the min and max values '
 minvalue = 2.5
 maxvalue =-2.5
-# Iterate over each source
+
+'iterate over all the file information'
 for i, source_info in enumerate(file_info):
     # File information
     directory = source_info["directory"]
@@ -44,26 +46,21 @@ for i, source_info in enumerate(file_info):
     variable_name = source_info["variable_name"]
     file_path = os.path.join(directory, file)
     
-    # Open the NetCDF dataset
     data = xr.open_dataset(file_path)
     
-    # Get the title from the filename
     title = os.path.splitext(file)[0]
     
-    # Import the shape file 
-    shapefile_path = 'C:/03_Capstone/Data/Analysis/shapefile_br/br_shapefile.shp'
+    'imprort a shape file of Brandenburg'
+    shapefile_path = '' #adjust 
     gdf = gpd.read_file(shapefile_path)
 
-    # Reproject the shapefile
-    gdf_reprojected = gdf.to_crs(epsg=3034)
-    output_shapefile_path = "C:/03_Capstone/Data/Analysis/shapefile_br/br_shapefile_epsg3034.shp"
+    gdf_reprojected = gdf.to_crs(epsg=3034) #reprojection the shape file 
+    output_shapefile_path = "" #adapt 
     gdf_reprojected.to_file(output_shapefile_path)
     gdf = gpd.read_file(output_shapefile_path)
 
-    # Extract the variable
     variable = data[variable_name]
 
-    # Plot the variable
     ax = axes[i]
     variable.plot.imshow(x="lon", y='lat', ax=ax, vmin=minvalue, vmax=maxvalue, cmap="bwr_r")
     gdf.plot(ax=ax, facecolor='none', edgecolor='black')
@@ -76,13 +73,9 @@ for i, source_info in enumerate(file_info):
         ax.text(0.95, 0.95, 'N', transform=ax.transAxes, ha='center', va='center', fontsize=8,)
 
     
-   
     
-
     
-# Add a common colorbar
-cbar_ax = fig.add_axes([0.92, 0.15, 0.02, 0.7])  # Adjust position as needed
-# norm = plt.Normalize(-2, 2)
+cbar_ax = fig.add_axes([0.92, 0.15, 0.02, 0.7])  
 sm = plt.cm.ScalarMappable(cmap="bwr_r")
 sm.set_array([])
 sm.set_clim(vmin=minvalue, vmax=maxvalue)
@@ -94,8 +87,5 @@ cbar.set_label('SPEI Index')
 for ax in axes:
     ax.images[-1].colorbar.remove()
 
-# Adjust layout
 plt.tight_layout()
-
-# Show the plot
 plt.show()

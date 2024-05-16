@@ -1,4 +1,9 @@
-"trying 8 with dif sources"
+""""
+purpose: to plot the anomaly figures of the mean and top 1% SPEI values (separately)
+    note: at the beginning of the file, only one file info should be uncommented
+
+author: Luca Boestfleisch 
+"""
 import os
 import xarray as xr
 import matplotlib.pyplot as plt
@@ -13,9 +18,9 @@ import matplotlib as mpl
 
 mpl.rcParams['font.family'] = 'Times New Roman'
 
-# C:\03_Capstone\Data\Analysis\avg_july
-# Define file information for each source
-"File information for Avg"
+"NOTE: ALL THE BELOW FILE INFORMATION NEEDS TO BE ADAPTED TO THE OWN FILE PATHS AND NAMES (so just an example)"
+
+"File information for Avg" 
 file_info = [
     {"directory": "C:/03_Capstone/Data/Analysis/avg_2015-2100", "file": "ssp126_anomaly_avg_2015-2035.nc", "variable_name": "spei_anomaly"},
     {"directory": "C:/03_Capstone/Data/Analysis/avg_2015-2100", "file": "ssp126_anomaly_avg_2035-2055.nc", "variable_name": "spei_anomaly"},
@@ -27,6 +32,7 @@ file_info = [
     {"directory": "C:/03_Capstone/Data/Analysis/avg_2015-2100", "file": "ssp585_anomaly_avg_2055-2075.nc", "variable_name": "spei_anomaly"},
     {"directory": "C:/03_Capstone/Data/Analysis/avg_2015-2100", "file": "ssp585_anomaly_avg_2075-2100.nc", "variable_name": "spei_anomaly"}, #end of ssp585 mean 
 ]
+
 "File information for Per1"
 # file_info = [
 #     {"directory": "C:/03_Capstone/Data/Analysis/per1_2015-2100", "file": "ssp126_anomaly_per1_2015-2035.nc", "variable_name": "spei_anomaly"},
@@ -40,6 +46,7 @@ file_info = [
 #     {"directory": "C:/03_Capstone/Data/Analysis/per1_2015-2100", "file": "ssp585_anomaly_per1_2075-2100.nc", "variable_name": "spei_anomaly"}, #end of ssp585 mean 
 
 # ]
+
 "file information for DOWNSCALE figure"
 # file_info = [
 #     {"directory": "C:/03_Capstone/Data/Downscale/ssp126/anomaly_mean", "file": "ssp126_downscale_050524_avg_2015-2100.nc", "variable_name": "spei_avg"},
@@ -67,52 +74,42 @@ file_info = [
 #     {"directory": "C:/03_Capstone/Data/Analysis/per1_2015-2100", "file": "ssp585_per1_2075-2100.nc", "variable_name": "spei_per1"}, #end of ssp585 mean 
 # ]
 
-# Define the number of rows and columns for subplots
+"define the amount of desired subplots"
 num_rows = 2
 num_cols = 4
-
-# Create the figure and axes
 fig, axes = plt.subplots(num_rows, num_cols, figsize=(15, 10))
 
-# Flatten the axes array for easier iteration
 axes = axes.flatten()
-# norm = plt.Normalize(-1, 1)
-sm = plt.cm.ScalarMappable(cmap="seismic_r") #OrRd_r or seismic_r
-sm.set_array([])  # Dummy array needed for ScalarMappable
+sm = plt.cm.ScalarMappable(cmap="seismic_r") #choose the desired colorscape 
+sm.set_array([])  
 
+'define the min and max values below '
 minvalue = 1
 maxvalue =-1
 
-# Iterate over each source
+'iterate the code over the file information above'
 for i, source_info in enumerate(file_info):
-    # File information
     directory = source_info["directory"]
     file = source_info["file"]
     variable_name = source_info["variable_name"]
     file_path = os.path.join(directory, file)
     
-    # Open the NetCDF dataset
     data = xr.open_dataset(file_path)
     
-    # Get the title from the filename
     title = os.path.splitext(file)[0]
     
-    # Import the shape file 
-    shapefile_path = 'C:/03_Capstone/Data/Analysis/shapefile_br/br_shapefile.shp'
+    shapefile_path = '' #adapt 
     gdf = gpd.read_file(shapefile_path)
-
-    # Reproject the shapefile
+    'reprojecting the shape file to match the projection of the files '
     gdf_reprojected = gdf.to_crs(epsg=3034)
-    output_shapefile_path = "C:/03_Capstone/Data/Analysis/shapefile_br/br_shapefile_epsg3034.shp"
+    output_shapefile_path = "" #adapt 
     gdf_reprojected.to_file(output_shapefile_path)
     gdf = gpd.read_file(output_shapefile_path)
 
-    # Extract the variable
     variable = data[variable_name]
 
-    # Plot the variable
     ax = axes[i]
-    variable.plot.imshow(x="lon", y='lat', ax=ax, vmin=minvalue, vmax=maxvalue, cmap="seismic_r") #OrRd_r or seismic_r
+    variable.plot.imshow(x="lon", y='lat', ax=ax, vmin=minvalue, vmax=maxvalue, cmap="seismic_r") #adjust the colormap if necessary 
     gdf.plot(ax=ax, facecolor='none', edgecolor='black')
     # ax.set_title(title, fontsize=8)
     ax.set_xlabel('Longitude', fontsize=8)
@@ -127,10 +124,8 @@ for i, source_info in enumerate(file_info):
     
 
     
-# Add a common colorbar
-cbar_ax = fig.add_axes([0.92, 0.15, 0.02, 0.7])  # Adjust position as needed
-# norm = plt.Normalize(-1, 1)
-sm = plt.cm.ScalarMappable(cmap="seismic_r") #OrRd_r or seismic_r
+cbar_ax = fig.add_axes([0.92, 0.15, 0.02, 0.7])  
+sm = plt.cm.ScalarMappable(cmap="seismic_r") 
 sm.set_array([])
 sm.set_clim(vmin=minvalue, vmax=maxvalue)
 cbar = plt.colorbar(sm, cax=cbar_ax)
@@ -140,8 +135,5 @@ cbar.set_label('SPEI Anomaly')
 for ax in axes:
     ax.images[-1].colorbar.remove()
 
-# Adjust layout
 plt.tight_layout()
-
-# Show the plot
 plt.show()
