@@ -5,3 +5,4 @@ This page follows the following format:
 	002: potential evapotranspiration and SPEI calculation 	
 	003: drought analysis 
 	004: downscaling 
+	005: code to make the figures
