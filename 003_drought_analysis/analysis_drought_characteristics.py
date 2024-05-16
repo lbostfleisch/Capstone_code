@@ -1,9 +1,8 @@
 """
-Drought Analysis
-This code analyses the presence of droughts, amount of drought days (duration), 
-    amount of drought periods (frequency), their minimum spei value (intensity)
-
-This code defines it all in one code and saves it to one file with several variables 
+purpose: This code analyses the presence of droughts, amount of drought days (duration), 
+    amount of drought periods (frequency), their minimum spei value (intensity), the amount of flash droughts
+    the output of this code are 2 files 
+    
 Author: Luca Boestfleisch 
 Last updated on: 19.04.24
 
@@ -29,17 +28,16 @@ lat_length_obs = (lat_max - lat_min)//5000 +1
 print(f"lat length model: {lat_length_model}")  #7
 print(f"lat length obs: {lat_length_obs}")   #77
 
-spei_path = "C:/03_Capstone/Data/Downscale/ssp126/downscale_ssp126_050524_lr001_bs128_hs300_dp5_epoch200.nc"  
+spei_path = "" #adapt  
 spei_data = Dataset(spei_path, 'r')
-spei_var = "predicted_spei"
+spei_var = "predicted_spei" #adapt
 
 all_days = 31411                                              ####################### ADAPT THIS 
 #16435 past 
 #31411 future 
 
-"Defining where the output files should save to"
-output_nc_file = "C:/03_Capstone/Data/Downscale/ssp126/downscale_ssp126_060524_lr001_bs128_hs300_dp5_epoch200_analysis.nc"
-output_avg_duration_file = "C:/03_Capstone/Data/Downscale/ssp126/downscale_ssp126_060524_lr001_bs128_hs300_dp5_epoch200_duration.nc"
+output_nc_file = "" #adapt
+output_avg_duration_file = "" #adapt
 
 
 Array1 = np.zeros((all_days, lon_length, lat_length), dtype=np.float32)  

@@ -230,7 +230,7 @@ d1 = 1.432788
 d2 = 0.189269
 d3 = 0.001308
 
-Dk_file = "C:/03_Capstone/Data/Future/ssp126/run1_200324/ssp126_dk_2015-2100.nc"#############     ADAPT HERE!!!
+Dk_file = ""#adapt
 Dk_data = Dataset(Dk_file, 'r')#############     ADAPT HERE!! 
 
 "Uncomment this if wanting to recalculate the shape/loc/scale of gev"
