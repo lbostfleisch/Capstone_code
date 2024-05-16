@@ -1,6 +1,6 @@
 """
-File for the Drought Characteristics Figure 
-want them all in one screen
+purpose: to map the Drought Characteristics (frequency, duration, intensity, and amount of flash droughts) 
+adapt the fiel information as necessary
 Date last updated: 20.04.2024
 """
 import os
@@ -35,20 +35,16 @@ file_info = [
     {"directory": "C:/03_Capstone/Data/Analysis/01_drought_analysis/ssp585", "file": "ssp585_avg_drought_duration_190424.nc", "variable_name": "flash_dr_count"}, #ssp585, flash drought count
 ]
 
-time_index_past = 16435 - 1
-time_index_future = 31411 - 1
-num_rows = 4
-num_cols = 3
+time_index_past = 16435 - 1  #adapt 
+time_index_future = 31411 - 1 #adapt 
+num_rows = 4 #adapt 
+num_cols = 3 #adapt 
 
-# Create the figure and axes
 fig, axes = plt.subplots(num_rows, num_cols, figsize=(20, 20))
 plt.subplots_adjust(wspace=0, hspace=0.01) 
-plt.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.05)  # Adjust margins around subplots
-
-# Flatten the axes array for easier iteration
+plt.subplots_adjust(left=0.05, right=0.95, top=0.95, bottom=0.05) 
 axes = axes.flatten()
-# sm = plt.cm.ScalarMappable(cmap="RdYlGn_r")
-# sm.set_array([])  # Dummy array needed for ScalarMappable
+
 
 
 for i in range(num_rows):
@@ -142,20 +138,7 @@ for i in range(num_rows):
     
     cbar_ax = fig.add_axes([0.95, 0.8 - i*0.2, 0.02, 0.15])  # Adjust position and height as needed
 
-    # if i == 0:
-    #     maxvalue = 200
-    #     minvalue = 0
-    #     # norm = plt.Normalize(0, 200)  # Range for row 1
-    #     sm = plt.cm.ScalarMappable(cmap="RdYlGn_r", norm=norm)
-    # elif i == 1:
-    #     norm = plt.Normalize(0, 50)  # Range for row 2
-    #     sm = plt.cm.ScalarMappable(cmap="RdYlGn_r", norm=norm)
-    # elif i == 2:
-    #     norm = plt.Normalize(-1.5, -4.5)  # Range for row 3
-    #     sm = plt.cm.ScalarMappable(cmap="RdYlGn", norm=norm)
-    # elif i == 3:
-    #     norm = plt.Normalize(0, 120)  # Range for row 4
-    #     sm = plt.cm.ScalarMappable(cmap="RdYlGn_r", norm=norm)
+    
     
     sm.set_array([])
     cbar = plt.colorbar(sm, cax=cbar_ax, orientation='vertical')
@@ -174,13 +157,9 @@ for i in range(num_rows):
 
 for ax in axes:
     ax.images[-1].colorbar.remove()
-    # ax.get_xaxis().get_major_formatter().set_scientific(False)
-    # ax.get_yaxis().get_major_formatter().set_scientific(False)
 
 
 
 
 plt.tight_layout()
-
-# Show the plot
 plt.show()

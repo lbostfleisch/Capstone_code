@@ -1,6 +1,5 @@
 """
-10.05.24
-figure 4B: probability distribution 
+purpose: plotting the probability distribution function for the SPEI data of each year
 
 steps to consider: 
 1) split the dataset up into days 
@@ -17,17 +16,14 @@ import matplotlib as mpl
 mpl.rcParams['font.family'] = 'Times New Roman'
 
 
-input_file_ssp126 = "C:/03_Capstone/Data/Future/ssp126/run1_200324/ssp126_spei_2015-2100_obsgevpara.nc"
+input_file_ssp126 = "" #adapt 
 input_ssp126 = Dataset(input_file_ssp126, 'r')
-var = 'spei'
+var = 'spei' #adapt
 lon = input_ssp126['lon'][:]
 lat = input_ssp126['lat'][:]
 time = input_ssp126['time'][:]
 
 
-
-
-# 2016 is a leap year 
 
 colors = [((i+0.01) / 86, 0.1, 0) for i in range(86)]  # Ranging from dark red to bright red
 custom_red_cmap = LinearSegmentedColormap.from_list('custom_red_r', colors)

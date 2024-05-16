@@ -1,6 +1,6 @@
 """
-downscaling figure 2: with the comparison of the past downscaled
-11.05.24
+purpose: mapping the obsevational, past modelled, and downscaled past data 
+author: Luca Boestfleisch 
 """
 
 import os
@@ -87,17 +87,15 @@ for i in range(num_rows):
             else:
                 variable = data[variable_name]
             
-            # Import the shape file 
+            'import the Brandenburg shapefile '
             shapefile_path = 'C:/03_Capstone/Data/Analysis/shapefile_br/br_shapefile.shp'
             gdf = gpd.read_file(shapefile_path)
 
-            # Reproject the shapefile
             gdf_reprojected = gdf.to_crs(epsg=3034)
             output_shapefile_path = "C:/03_Capstone/Data/Analysis/shapefile_br/br_shapefile_epsg3034.shp"
             gdf_reprojected.to_file(output_shapefile_path)
             gdf = gpd.read_file(output_shapefile_path)
             
-            # Plot the variable
             ax = row_axes[j]
             variable.plot.imshow(x="lon", y='lat', ax=ax, cmap="bwr_r")
             gdf.plot(ax=ax, facecolor='none', edgecolor='black')
@@ -127,9 +125,5 @@ cbar.set_label('SPEI Values')
 for ax in axes:
     ax.images[-1].colorbar.remove()
    
-
-
-
-
 plt.tight_layout()
 plt.show()
