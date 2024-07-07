@@ -15,10 +15,9 @@ from netCDF4 import Dataset
 import netCDF4
 
 "First: cropping the file down to the desired lat/lon in WGS84"
-# #C:\03_Capstone\a_publishing\data\CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E
 # drive = "C:/" #adapt
-# directory = "03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/pr"  #adapt
-# file = "pr_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_19660101-19701231.nc" #adapt
+# directory = "03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/tasmin"  #adapt
+# file = "tasmin_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_20010101-20051231.nc" #adapt
 # file_path = os.path.join(drive, directory, file)
 
 # with Dataset(file_path, 'r') as nc:
@@ -45,18 +44,25 @@ import netCDF4
 # days_loop = 0 
 # loaded_data = xr.open_dataset(file_path)
 
+"below: CMIP6 Capstone coordinates"
 # lat_min, lat_max = 49, 56 #adapt
 # lon_min, lon_max = 9, 15.5 #adapt
 
-# lon_mask = (loaded_data['lon'] >= lon_min) & (loaded_data['lon'] <= lon_max)
-# lat_mask = (loaded_data['lat'] >= lat_min) & (loaded_data['lat'] <= lat_max)
+# "below: CMIP5 coordinates"
+lat_min, lat_max = -6.0, 8.0
+lon_min, lon_max = -8.0, -1.0
 
-# cropped_data = loaded_data.sel( lon = lon_mask, lat = lat_mask )
-# cropped_data = cropped_data.transpose('time', 'lon', 'lat', 'axis_nbounds')
+# lon_mask = (loaded_data['rlon'] >= lon_min) & (loaded_data['rlon'] <= lon_max)
+# lat_mask = (loaded_data['rlat'] >= lat_min) & (loaded_data['rlat'] <= lat_max)
+
+# cropped_data = loaded_data.sel( rlon = lon_mask, rlat = lat_mask )
+# # cropped_data = cropped_data.transpose('time', 'rlon', 'rlat', 'axis_nbounds') #old: 'axis_nbounds' only applicable to CMIP6
+# cropped_data = cropped_data.transpose('time', 'rlon', 'rlat', 'bnds') 
+
 
 # #save the data 
-# output_drive = "" #adapt
-# output_file = ""#adapt
+# output_drive = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/tasmin" #adapt
+# output_file = "tasmin_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_20010101-20051231_cropped.nc"#adapt
 # output_path = os.path.join(output_drive, output_file)
 
 # cropped_data.to_netcdf(output_path, format='NETCDF4')
@@ -66,94 +72,12 @@ import netCDF4
 
 "reprojecting the file"
 "Load the NetCDF file in WGS84"
-input_file = 'C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/pr/pr_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_19660101-19701231.nc'#adapt
-# input_file = "C:/03_Capstone/Data/Future/historical/pr_his/his_pr_1950-2014_EPSG3034.nc"
-output_file = 'C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/pr/pr_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_19660101-19701231_epsg3034.nc'#adapt
+# input_file = 'C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/pr/pr_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_19660101-19701231.nc'#adapt
+# # input_file = "C:/03_Capstone/Data/Future/historical/pr_his/his_pr_1950-2014_EPSG3034.nc"
+# output_file = 'C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/pr/pr_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_19660101-19701231_epsg3034.nc'#adapt
 
 
-
-dataset = netCDF4.Dataset(input_file, 'r')
-
-# Print the metadata
-print(dataset)
-
-# Check for specific attributes related to the coordinate system
-if 'rotated_pole' in dataset.variables:
-    rotated_pole = dataset.variables['rotated_pole']
-    print(f"grid_mapping_name: {rotated_pole.grid_mapping_name}")
-    print(f"grid_north_pole_latitude: {rotated_pole.grid_north_pole_latitude}")
-    print(f"grid_north_pole_longitude: {rotated_pole.grid_north_pole_longitude}")
-
-# Close the dataset
-dataset.close()
-
-
-
-# ds = xr.open_dataset(input_file)
-
-# def get_coordinate_system(ds):
-#     coord_info = {}
-#     for coord_name, coord in ds.coords.items():
-#         coord_info[coord_name] = {
-#             'standard_name': coord.attrs.get('standard_name', None),
-#             'units': coord.attrs.get('units', None),
-#             'axis': coord.attrs.get('axis', None),
-#             'long_name': coord.attrs.get('long_name', None),
-#         }
-#     return coord_info
-
-# def get_projection_info(ds):
-#     projection_info = {}
-#     for var_name, var in ds.variables.items():
-#         if 'grid_mapping_name' in var.attrs:
-#             projection_info[var_name] = var.attrs
-#     return projection_info 
-
-
-# def get_crs_info(ds):
-#     crs_info = {}
-#     if 'crs' in ds.variables:
-#         crs_var = ds.variables['crs']
-#         crs_info = crs_var.attrs
-#     elif 'spatial_ref' in ds.variables:
-#         crs_var = ds.variables['spatial_ref']
-#         crs_info = crs_var.attrs
-#     else:
-#         for var_name, var in ds.variables.items():
-#             if 'grid_mapping' in var.attrs:
-#                 crs_var_name = var.attrs['grid_mapping']
-#                 if crs_var_name in ds.variables:
-#                     crs_info = ds.variables[crs_var_name].attrs
-#                 break
-#     return crs_info
-
-
-# # Get coordinate system information
-# coordinate_system_info = get_coordinate_system(ds)
-# print("Coordinate System Information:")
-# for coord, info in coordinate_system_info.items():
-#     print(f"Coordinate: {coord}")
-#     for attr, value in info.items():
-#         print(f"  {attr}: {value}")
-#     print()
-
-
-# projection_info = get_projection_info(ds)
-# print("Projection Information:")
-# for proj, attrs in projection_info.items():
-#     print(f"Projection: {proj}")
-#     for attr, value in attrs.items():
-#         print(f"  {attr}: {value}")
-#     print()
-
-# crs_info = get_crs_info(ds)
-# print("CRS Information:")
-# for attr, value in crs_info.items():
-#     print(f"  {attr}: {value}")
-
-########################################################################
-
-# Step 3: Reproject Coordinates (if needed)
+# # Step 3: Reproject Coordinates (if needed)
 # # source_proj = Proj(proj='latlong', datum='WGS84')
 # target_proj = Proj(init='epsg:3034')
 
@@ -174,14 +98,19 @@ dataset.close()
 # ds_resampled.to_netcdf(output_file)
 # print("File reprojected to LCC Europe EPSG3034 and saved! :) ")
 
-# # # ##################################################
-# # "Then: crop down to the exact same coordinates as the obs data"
+# # ##################################################
+# "Then: crop down to the exact same coordinates as the obs data"
+"CMIP6"
 # lon_max = 4323286.0
 # lon_min =  4028021.5  
 # lat_max = 3023612.5
 # lat_min = 2641848.5
 # lon_length = 10
 # lat_length = 7
+
+"CMIP5"
+lon_length = 63
+lat_length = 128
 
 # output_directory_EPSG3034 = ""#adapt
 # output_file_EPSG3034 = ""#adapt
@@ -201,61 +130,66 @@ dataset.close()
 
 ##########################################
 "Then: loop the files together"
+"CMIP6"
 # all_days_join = 9131 + 9132 + 9131 + 4017
-# days_loop = 0
-# Array = np.zeros((all_days_join, lon_length , lat_length), dtype=np.float32) 
 
-# for i in range(2):
-#     var = "tasmin"#adapt
-#     file_name = f"cropped2_tasmin_day_CNRM-CM6-1-HR_ssp126_r1i1p1f2_gr_{i}.nc"#adapt
-#     file_path = os.path.join(output_directory_EPSG3034, file_name)
+"CMIP5"
+all_days_join = 1826 + 1826 + 1827 + 1826 + 1826 + 1826 + 1827 + 1826 
+print("all_days_join",all_days_join )
+days_loop = 0
+Array = np.zeros((all_days_join, lon_length , lat_length), dtype=np.float32) 
 
-#     with Dataset(file_path, 'r') as f:
-#         dataT = xr.open_dataset(file_path)
-#         lat_mask = (dataT['lat'] >= lat_min) & (dataT['lat'] <= lat_max)
-#         lon_mask = (dataT['lon'] >= lon_min) & (dataT['lon'] <= lon_max)
-#         cropped_data = dataT.isel(lon=lon_mask, lat=lat_mask)
+for i in range(8):
+    var = "tasmin"#adapt
+    file_name = f"tasmin_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_{i}.nc"#adapt
+    file_path = os.path.join("C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/tasmin/", file_name)
 
-#         time = f.variables['time'][:]
-#         lon = f.variables["lon"][:]
-#         lat = f.variables["lat"][:]
-#         days = len(time)
+    with Dataset(file_path, 'r') as f:
+        dataT = xr.open_dataset(file_path)
+        lat_mask = (dataT['rlat'] >= lat_min) & (dataT['rlat'] <= lat_max)
+        lon_mask = (dataT['rlon'] >= lon_min) & (dataT['rlon'] <= lon_max)
+        cropped_data = dataT.isel(rlon=lon_mask, rlat=lat_mask)
 
-
-#         Array[days_loop:(days_loop+days), :, :] = np.float32(cropped_data[var][:, :, :])
-#         days_loop += days
-#         print(days_loop)
-#         print(days)
+        time = f.variables['time'][:]
+        lon = f.variables["rlon"][:]
+        lat = f.variables["rlat"][:]
+        days = len(time)
 
 
-# """Create a new netCDF file"""
-# output_directory_joined = ""#adapt
-# output_file = ""#adapt
-
-# with Dataset(os.path.join(output_directory_joined, output_file), 'w', format='NETCDF4') as ds:
-#     time = ds.createDimension('time', all_days_join)
-#     lon = ds.createDimension('lon', lon_length)  # Corrected dimension name
-#     lat = ds.createDimension('lat', lat_length)  # Corrected dimension name
-
-#     times = ds.createVariable('time', 'f4', ('time',))
-#     lons = ds.createVariable('lon', 'f4', ('lon',))  # Corrected variable name
-#     lats = ds.createVariable('lat', 'f4', ('lat',))  # Corrected variable name
-#     value = ds.createVariable(var, 'f4', ('time', 'lon', 'lat'))  # Corrected variable names
-
-#     value.units = 'Unknown'
-
-#     # Use the specified boundaries for lons and lats
-#     times[:] = np.arange(0, all_days_join, 1)
-#     lons[:] = np.linspace(lon_min, lon_max, lon_length)
-#     lats[:] = np.linspace(lat_min, lat_max, lat_length)
-#     print(Array.shape)
-#     value[:, :, :] = Array
+        Array[days_loop:(days_loop+days), :, :] = np.float32(cropped_data[var][:, :, :])
+        days_loop += days
+        print(days_loop)
+        print(days)
 
 
-# print("saved the joined file!! :)")
+"""Create a new netCDF file"""
+output_directory_joined = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/tasmin/"#adapt
+output_file = "tasmin_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_joined.nc"#adapt
 
-# # ##########################################################3
-# "Last step: Crop the joined data down to 1970-2014 (including both years)"
+with Dataset(os.path.join(output_directory_joined, output_file), 'w', format='NETCDF4') as ds:
+    time = ds.createDimension('time', all_days_join)
+    lon = ds.createDimension('rlon', lon_length)  # Corrected dimension name
+    lat = ds.createDimension('rlat', lat_length)  # Corrected dimension name
+
+    times = ds.createVariable('time', 'f4', ('time',))
+    lons = ds.createVariable('rlon', 'f4', ('rlon',))  # Corrected variable name
+    lats = ds.createVariable('rlat', 'f4', ('rlat',))  # Corrected variable name
+    value = ds.createVariable(var, 'f4', ('time', 'rlon', 'rlat'))  # Corrected variable names
+
+    value.units = 'Unknown'
+
+    # Use the specified boundaries for lons and lats
+    times[:] = np.arange(0, all_days_join, 1)
+    lons[:] = np.linspace(lon_min, lon_max, lon_length)
+    lats[:] = np.linspace(lat_min, lat_max, lat_length)
+    print(Array.shape)
+    value[:, :, :] = Array
+
+
+print("saved the joined file!! :)")
+
+# ##########################################################3
+"Last step: Crop the joined data down to 1970-2014 (including both years)"
 
 # input_path_time = ""#adapt
 # var = "pr" #adapt
