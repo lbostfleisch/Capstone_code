@@ -12,21 +12,30 @@ import os
 from netCDF4 import Dataset
 import numpy as np
 
-pr_file = ""  #adapt
+pr_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/pr/pr_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_joined.nc"  #adapt
 pr_data = Dataset(pr_file, 'r')
-all_days = 31411
-#16435 past 
+all_days = 14610
+#14610 past CMIP5
+#16435 past CMIP6
 #31411 future 
 var = "pr" #adapt
-lon_max = 4323286.0
-lon_min =  4028021.5  
-lat_max = 3023612.5
-lat_min = 2641848.5
-lon_length = 10
-lat_length = 7
 
-lon = pr_data.variables['lon'][:]
-lat = pr_data.variables['lat'][:]
+"CMIP 6"
+# lon_max = 4323286.0
+# lon_min =  4028021.5  
+# lat_max = 3023612.5
+# lat_min = 2641848.5
+# lon_length = 10
+# lat_length = 7
+
+"CMIP 5"
+lat_min, lat_max = -6.0, 8.0
+lon_min, lon_max = -8.0, -1.0
+lon_length = 63
+lat_length = 128
+
+lon = pr_data.variables['rlon'][:]
+lat = pr_data.variables['rlat'][:]
 time = pr_data.variables['time'][:]
 nt, nlons, nlats = len(time), len(lon), len(lat)
 Array = np.zeros((all_days, lon_length, lat_length), dtype=np.float32)  
@@ -47,18 +56,18 @@ for t in range(all_days):
 
 
 """Create a new netCDF file"""
-output_directory = "" #adapt
-output_file = "" #adapt
+output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/pr/" #adapt
+output_file = "pr_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_joined_mm.nc" #adapt
 
 with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4') as ds:
     time = ds.createDimension('time', all_days)
-    lon = ds.createDimension('lon', lon_length)  #### ISSUE HERE 
-    lat = ds.createDimension('lat', lat_length) ### ISSUE HERE 
+    lon = ds.createDimension('rlon', lon_length)  #### ISSUE HERE 
+    lat = ds.createDimension('rlat', lat_length) ### ISSUE HERE 
 
     times = ds.createVariable('time', 'f4', ('time',))
-    lons = ds.createVariable('lon', 'f4', ('lon',))  # Corrected variable name
-    lats = ds.createVariable('lat', 'f4', ('lat',))  # Corrected variable name
-    value = ds.createVariable(var, 'f4', ('time', 'lon', 'lat'))  # Corrected variable names
+    lons = ds.createVariable('rlon', 'f4', ('rlon',))  # Corrected variable name
+    lats = ds.createVariable('rlat', 'f4', ('rlat',))  # Corrected variable name
+    value = ds.createVariable(var, 'f4', ('time', 'rlon', 'rlat'))  # Corrected variable names
 
     value.units = 'Unknown'
 
