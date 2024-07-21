@@ -15,7 +15,7 @@ import numpy as np
 pr_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/pr/pr_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_joined.nc"  #adapt
 pr_data = Dataset(pr_file, 'r')
 all_days = 14610
-#14610 past CMIP5
+#14610 past CMIP5 
 #16435 past CMIP6
 #31411 future 
 var = "pr" #adapt
