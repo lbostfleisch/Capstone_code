@@ -15,10 +15,11 @@ from netCDF4 import Dataset
 import netCDF4
 
 "First: cropping the file down to the desired lat/lon in WGS84"
-# drive = "C:/" #adapt
-# directory = "03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/tasmin"  #adapt
-# file = "tasmin_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_20010101-20051231.nc" #adapt
-# file_path = os.path.join(drive, directory, file)
+drive = "C:/" #adapt
+directory = "03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/tasmax"  #adapt
+file = "tasmax_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_20010101-20051231.nc" #adapt
+file_path = os.path.join(drive, directory, file)
+
 
 # with Dataset(file_path, 'r') as nc:
 #     # Display dimensions
@@ -39,7 +40,7 @@ import netCDF4
 #             print(f"Min Latitude: {var[:].min()}, Max Latitude: {var[:].max()}")
 
 
-# """code to crop the file down to given lat/lon extents"""
+"""code to crop the file down to given lat/lon extents"""
 
 # days_loop = 0 
 # loaded_data = xr.open_dataset(file_path)
@@ -48,7 +49,7 @@ import netCDF4
 # lat_min, lat_max = 49, 56 #adapt
 # lon_min, lon_max = 9, 15.5 #adapt
 
-# "below: CMIP5 coordinates"
+"below: CMIP5 coordinates"
 lat_min, lat_max = -6.0, 8.0
 lon_min, lon_max = -8.0, -1.0
 
@@ -60,9 +61,9 @@ lon_min, lon_max = -8.0, -1.0
 # cropped_data = cropped_data.transpose('time', 'rlon', 'rlat', 'bnds') 
 
 
-# #save the data 
-# output_drive = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/tasmin" #adapt
-# output_file = "tasmin_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_20010101-20051231_cropped.nc"#adapt
+# # #save the data 
+# output_drive = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/tasmax" #adapt
+# output_file = "tasmax_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_20010101-20051231_cropped.nc"#adapt
 # output_path = os.path.join(output_drive, output_file)
 
 # cropped_data.to_netcdf(output_path, format='NETCDF4')
@@ -99,7 +100,7 @@ lon_min, lon_max = -8.0, -1.0
 # print("File reprojected to LCC Europe EPSG3034 and saved! :) ")
 
 # # ##################################################
-# "Then: crop down to the exact same coordinates as the obs data"
+"Then: crop down to the exact same coordinates as the obs data"
 "CMIP6"
 # lon_max = 4323286.0
 # lon_min =  4028021.5  
@@ -108,7 +109,7 @@ lon_min, lon_max = -8.0, -1.0
 # lon_length = 10
 # lat_length = 7
 
-"CMIP5"
+# "CMIP5"
 lon_length = 63
 lat_length = 128
 
@@ -140,9 +141,9 @@ days_loop = 0
 Array = np.zeros((all_days_join, lon_length , lat_length), dtype=np.float32) 
 
 for i in range(8):
-    var = "tasmin"#adapt
-    file_name = f"tasmin_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_{i}.nc"#adapt
-    file_path = os.path.join("C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/tasmin/", file_name)
+    var = "tasmax"#adapt
+    file_name = f"tasmax_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_{i}.nc"#adapt
+    file_path = os.path.join("C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/tasmax/", file_name)
 
     with Dataset(file_path, 'r') as f:
         dataT = xr.open_dataset(file_path)
@@ -163,8 +164,8 @@ for i in range(8):
 
 
 """Create a new netCDF file"""
-output_directory_joined = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/tasmin/"#adapt
-output_file = "tasmin_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_joined.nc"#adapt
+output_directory_joined = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/tasmax/"#adapt
+output_file = "tasmax_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_joined.nc"#adapt
 
 with Dataset(os.path.join(output_directory_joined, output_file), 'w', format='NETCDF4') as ds:
     time = ds.createDimension('time', all_days_join)
