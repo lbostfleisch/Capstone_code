@@ -15,10 +15,10 @@ from netCDF4 import Dataset
 import netCDF4
 
 "First: cropping the file down to the desired lat/lon in WGS84"
-drive = "C:/" #adapt
-directory = "03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/tasmax"  #adapt
-file = "tasmax_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_20010101-20051231.nc" #adapt
-file_path = os.path.join(drive, directory, file)
+# drive = "C:/" #adapt
+# directory = "03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/pr"  #adapt
+# file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_20010101-20051231.nc" #adapt
+# file_path = os.path.join(drive, directory, file)
 
 
 # with Dataset(file_path, 'r') as nc:
@@ -61,9 +61,9 @@ lon_min, lon_max = -8.0, -1.0
 # cropped_data = cropped_data.transpose('time', 'rlon', 'rlat', 'bnds') 
 
 
-# # #save the data 
-# output_drive = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/tasmax" #adapt
-# output_file = "tasmax_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_20010101-20051231_cropped.nc"#adapt
+#save the data 
+# output_drive = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/pr" #adapt
+# output_file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_20010101-20051231_cropped.nc"#adapt
 # output_path = os.path.join(output_drive, output_file)
 
 # cropped_data.to_netcdf(output_path, format='NETCDF4')
@@ -141,9 +141,9 @@ days_loop = 0
 Array = np.zeros((all_days_join, lon_length , lat_length), dtype=np.float32) 
 
 for i in range(8):
-    var = "tasmax"#adapt
-    file_name = f"tasmax_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_{i}.nc"#adapt
-    file_path = os.path.join("C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/tasmax/", file_name)
+    var = "pr"#adapt
+    file_name = f"pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_{i}.nc"#adapt
+    file_path = os.path.join("C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/pr/cropped_files", file_name)
 
     with Dataset(file_path, 'r') as f:
         dataT = xr.open_dataset(file_path)
@@ -164,8 +164,8 @@ for i in range(8):
 
 
 """Create a new netCDF file"""
-output_directory_joined = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/tasmax/"#adapt
-output_file = "tasmax_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_joined.nc"#adapt
+output_directory_joined = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/pr/"#adapt
+output_file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_joined.nc"#adapt
 
 with Dataset(os.path.join(output_directory_joined, output_file), 'w', format='NETCDF4') as ds:
     time = ds.createDimension('time', all_days_join)
