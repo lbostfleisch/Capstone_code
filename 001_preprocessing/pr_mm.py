@@ -12,7 +12,7 @@ import os
 from netCDF4 import Dataset
 import numpy as np
 
-pr_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/pr/pr_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_joined.nc"  #adapt
+pr_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/pr/pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_joined.nc"  #adapt
 pr_data = Dataset(pr_file, 'r')
 all_days = 14610
 #14610 past CMIP5 
@@ -56,8 +56,8 @@ for t in range(all_days):
 
 
 """Create a new netCDF file"""
-output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E/v2_r1i1p1/pr/" #adapt
-output_file = "pr_EUR-11_CNRM-CERFACS-CNRM-CM5_historical_r1i1p1_KNMI-RACMO22E_v2_day_joined_mm.nc" #adapt
+output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/pr/" #adapt
+output_file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_joined_mm.nc" #adapt
 
 with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4') as ds:
     time = ds.createDimension('time', all_days)
