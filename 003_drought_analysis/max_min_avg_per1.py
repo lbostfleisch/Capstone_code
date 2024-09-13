@@ -12,7 +12,7 @@ lon_min =  4028021.5
 lat_max = 3023612.5
 lat_min = 2641848.5
 
-input_file = "" #adapt
+input_file = "C:/03_Capstone/a_publishing/data/complete_CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/output/spei_CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5_r12i1p1_v1_day.nc" #adapt
 data = Dataset(input_file, 'r')
 var = "spei_min"      ##adapt
 lon = data.variables["lon"][:]
