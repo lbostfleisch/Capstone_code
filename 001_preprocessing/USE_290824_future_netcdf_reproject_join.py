@@ -15,69 +15,60 @@ from netCDF4 import Dataset
 import netCDF4
 
 "First: cropping the file down to the desired lat/lon in WGS84"
-drive = "C:/" #adapt
-directory = "03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/tasmin"  #adapt
-file = "tasmin_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_19660101-19701231.nc" #adapt
-file_path = os.path.join(drive, directory, file)
-
-'the below code served as a check to see what the dimensions of the historical data of the other files was'
 # drive = "C:/" #adapt
-# directory = "03_Capstone/a_publishing/data/complete_CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/pr/original_files"  #adapt
-# file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_19660101-19701231.nc" #adapt
+# directory = "03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr/"  #adapt
+# file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_7.nc" #adapt
 # file_path = os.path.join(drive, directory, file)
 
-with Dataset(file_path, 'r') as nc:
-    # Display dimensions
-    for dimname, dim in nc.dimensions.items():
-        print(f"Dimension: {dimname}, Size: {len(dim)}")
+# with Dataset(file_path, 'r') as nc:
+#     # Display dimensions
+#     for dimname, dim in nc.dimensions.items():
+#         print(f"Dimension: {dimname}, Size: {len(dim)}")
 
-    # Display variables
-    for varname, var in nc.variables.items():
-        print(f"Variable: {varname}, Shape: {var.shape}")
+#     # Display variables
+#     for varname, var in nc.variables.items():
+#         print(f"Variable: {varname}, Shape: {var.shape}")
 
-    for varname, var in nc.variables.items():
-        print(f"Variable: {varname}, Shape: {var.shape}")
+#     for varname, var in nc.variables.items():
+#         print(f"Variable: {varname}, Shape: {var.shape}")
 
-        # Check if the variable is longitude or latitude
-        if 'lon' in varname.lower():
-            print(f"Min Longitude: {var[:].min()}, Max Longitude: {var[:].max()}")
-        elif 'lat' in varname.lower():
-            print(f"Min Latitude: {var[:].min()}, Max Latitude: {var[:].max()}")
+#         # Check if the variable is longitude or latitude
+#         if 'lon' in varname.lower():
+#             print(f"Min Longitude: {var[:].min()}, Max Longitude: {var[:].max()}")
+#         elif 'lat' in varname.lower():
+#             print(f"Min Latitude: {var[:].min()}, Max Latitude: {var[:].max()}")
 
 
-"""code to crop the file down to given lat/lon extents"""
+# """code to crop the file down to given lat/lon extents"""
 
-days_loop = 0 
-loaded_data = xr.open_dataset(file_path)
+# days_loop = 0 
+# loaded_data = xr.open_dataset(file_path)
 
-"below: CMIP6 Capstone coordinates"
+# "below: CMIP6 Capstone coordinates"
 # lat_min, lat_max = 49, 56 #adapt
 # lon_min, lon_max = 9, 15.5 #adapt
 
-"below: CMIP5 coordinates: for rotated coordinate system"
+# # "below: CMIP5 coordinates: for rotated coordinate system"
 lat_min, lat_max = -6.0, 8.0
 lon_min, lon_max = -8.0, -1.0
 
-lon_mask = (loaded_data['rlon'] >= lon_min) & (loaded_data['rlon'] <= lon_max)
-lat_mask = (loaded_data['rlat'] >= lat_min) & (loaded_data['rlat'] <= lat_max)
+# lon_mask = (loaded_data['rlon'] >= lon_min) & (loaded_data['rlon'] <= lon_max)
+# lat_mask = (loaded_data['rlat'] >= lat_min) & (loaded_data['rlat'] <= lat_max)
 
-cropped_data = loaded_data.sel( rlon = lon_mask, rlat = lat_mask )
-# cropped_data = cropped_data.transpose('time', 'rlon', 'rlat', 'axis_nbounds') #old: 'axis_nbounds' only applicable to CMIP6
-# cropped_data = cropped_data.transpose('time', 'rlon', 'rlat', 'bnds') 
-cropped_data = cropped_data.transpose('time', 'bnds', 'rlon', 'rlat', 'vertices') 
+# cropped_data = loaded_data.sel( rlon = lon_mask, rlat = lat_mask )
+# # cropped_data = cropped_data.transpose('time', 'rlon', 'rlat', 'axis_nbounds') #old: 'axis_nbounds' only applicable to CMIP6
+# # cropped_data = cropped_data.transpose('time', 'rlon', 'rlat', 'bnds') 
+# cropped_data = cropped_data.transpose('time', 'bnds', 'rlon', 'rlat', 'vertices') 
 
 
-# save the data 
-output_drive = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/tasmin" #adapt
-output_file = "tasmin_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_19660101-19701231_cropped.nc"#adapt
-output_path = os.path.join(output_drive, output_file)
+# # save the data 
+# output_drive = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr" #adapt
+# output_file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_7_cropped.nc"#adapt
+# output_path = os.path.join(output_drive, output_file)
 
-cropped_data.to_netcdf(output_path, format='NETCDF4')
-print("cropped and saved the initial file!")
+# cropped_data.to_netcdf(output_path, format='NETCDF4')
+# print("cropped and saved the initial file!")
 
-"below: CMIP5, Lambert Conformal projection coordinates (for ALADIN63)"
-# lat_min, lat_max = 47, 55
-# lon_min, lon_max = 5, 15 
 
 # #########################################################################
 
@@ -145,59 +136,60 @@ lat_length = 128
 # all_days_join = 9131 + 9132 + 9131 + 4017
 
 "CMIP5"
-# all_days_join = 1826 + 1826 + 1827 + 1826 + 1826 + 1826 + 1827 + 1826 
-# print("all_days_join",all_days_join )
-# days_loop = 0
-# Array = np.zeros((all_days_join, lon_length , lat_length), dtype=np.float32) 
+all_days_join = 1826 + 1826 + 1827 + 1826 + 1826 + 1826 + 1827 + 1826 
+print("all_days_join",all_days_join )
+days_loop = 0
+Array = np.zeros((all_days_join, lon_length , lat_length), dtype=np.float32) 
 
-# for i in range(8):
-#     var = "pr"#adapt
-#     file_name = f"pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_{i}.nc"#adapt
-#     file_path = os.path.join("C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/pr/cropped_files", file_name)
+for i in range(8):
+    var = "pr"#adapt
+    file_name = f"pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_{i}_cropped.nc"#adapt
+    file_path = os.path.join("C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr", file_name)
 
-#     with Dataset(file_path, 'r') as f:
-#         dataT = xr.open_dataset(file_path)
-#         lat_mask = (dataT['lat'] >= lat_min) & (dataT['lat'] <= lat_max)
-#         lon_mask = (dataT['lon'] >= lon_min) & (dataT['lon'] <= lon_max)
-#         cropped_data = dataT.isel(lon=lon_mask, lat=lat_mask)
+    with Dataset(file_path, 'r') as f:
+        dataT = xr.open_dataset(file_path)
+        lat_mask = (dataT['rlat'] >= lat_min) & (dataT['rlat'] <= lat_max)
+        lon_mask = (dataT['rlon'] >= lon_min) & (dataT['rlon'] <= lon_max)
+        cropped_data = dataT.isel(rlon=lon_mask, rlat=lat_mask)
 
-#         time = f.variables['time'][:]
-#         lon = f.variables["lon"][:]
-#         lat = f.variables["lat"][:]
-#         days = len(time)
+        time = f.variables['time'][:]
+        lon = f.variables["rlon"][:]
+        lat = f.variables["rlat"][:]
+        days = len(time)
 
 
-#         Array[days_loop:(days_loop+days), :, :] = np.float32(cropped_data[var][:, :, :])
-#         days_loop += days
-#         print(days_loop)
-#         print(days)
+        Array[days_loop:(days_loop+days), :, :] = np.float32(cropped_data[var][:, :, :])
+
+        days_loop += days
+        print(days_loop)
+        print(days)
 
 
 """Create a new netCDF file"""
-# output_directory_joined = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/pr/"#adapt
-# output_file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_joined.nc"#adapt
+output_directory_joined = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr"#adapt
+output_file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005_joined.nc"#adapt
 
-# with Dataset(os.path.join(output_directory_joined, output_file), 'w', format='NETCDF4') as ds:
-#     time = ds.createDimension('time', all_days_join)
-#     lon = ds.createDimension('lon', lon_length)  # Corrected dimension name
-#     lat = ds.createDimension('lat', lat_length)  # Corrected dimension name
+with Dataset(os.path.join(output_directory_joined, output_file), 'w', format='NETCDF4') as ds:
+    time = ds.createDimension('time', all_days_join)
+    lon = ds.createDimension('lon', lon_length)  # Corrected dimension name
+    lat = ds.createDimension('lat', lat_length)  # Corrected dimension name
 
-#     times = ds.createVariable('time', 'f4', ('time',))
-#     lons = ds.createVariable('lon', 'f4', ('lon',))  # Corrected variable name
-#     lats = ds.createVariable('lat', 'f4', ('lat',))  # Corrected variable name
-#     value = ds.createVariable(var, 'f4', ('time', 'lon', 'lat'))  # Corrected variable names
+    times = ds.createVariable('time', 'f4', ('time',))
+    lons = ds.createVariable('lon', 'f4', ('lon',))  # Corrected variable name
+    lats = ds.createVariable('lat', 'f4', ('lat',))  # Corrected variable name
+    value = ds.createVariable(var, 'f4', ('time', 'lon', 'lat'))  # Corrected variable names
 
-#     value.units = 'Unknown'
+    value.units = 'Unknown'
 
-#     # Use the specified boundaries for lons and lats
-#     times[:] = np.arange(0, all_days_join, 1)
-#     lons[:] = np.linspace(lon_min, lon_max, lon_length)
-#     lats[:] = np.linspace(lat_min, lat_max, lat_length)
-#     print(Array.shape)
-#     value[:, :, :] = Array
+    # Use the specified boundaries for lons and lats
+    times[:] = np.arange(0, all_days_join, 1)
+    lons[:] = np.linspace(lon_min, lon_max, lon_length)
+    lats[:] = np.linspace(lat_min, lat_max, lat_length)
+    print(Array.shape)
+    value[:, :, :] = Array
 
 
-# print("saved the joined file!! :)")
+print("saved the joined file!! :)")
 
 # ##########################################################3
 "Last step: Crop the joined data down to 1970-2014 (including both years)"
