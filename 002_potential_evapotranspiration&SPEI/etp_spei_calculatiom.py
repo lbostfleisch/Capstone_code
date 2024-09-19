@@ -35,9 +35,9 @@ Note: everything that needs to be adapted between runs, is marked with the comme
 
 
 "STEP 0: Importing all the file paths"
-tmax_nc_path = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/tasmax/tasmax_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_1965-2005_tempC.nc" #adapt 
-tmin_nc_path = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/tasmin/tasmin_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_1965-2005_tempC.nc" #adapt 
-precipitation_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/pr/pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_joined_mm.nc" #adapt 
+tmax_nc_path = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/tasmax/tasmax_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005_degC.nc" #adapt 
+tmin_nc_path = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/tasmin/tasmin_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005_degC.nc" #adapt 
+precipitation_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr/pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005_joined_mm.nc" #adapt 
 tmax_nc = Dataset(tmax_nc_path, 'r')
 tmin_nc = Dataset(tmin_nc_path, 'r')
 pr_data = Dataset(precipitation_file, 'r')
@@ -95,8 +95,8 @@ for t in range(all_days):
 
 
 """saving the file"""            
-output_directory_etp = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/output/" #adapt 
-output_file_etp = "etp_CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5_r12i1p1_v1_day.nc" #adapt 
+output_directory_etp = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/" #adapt 
+output_file_etp = "etp_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc" #adapt  ##############CONINUE HERE!!!
 var = "etp" #adapt 
 
 
@@ -123,7 +123,7 @@ print("ETP file successfully calculated and saved!")
 # #####################################################################################################
 
 "STEP 2: Calculating the water balance Di"
-pet_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/output/etp_CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5_r12i1p1_v1_day.nc"  #adapt 
+pet_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/etp_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc"  #adapt 
 pet_data = Dataset(pet_file, 'r')
 
 for t in range(all_days):  
@@ -138,8 +138,8 @@ for t in range(all_days):
 
     print(f"Di, Time step: {t}/{all_days}")
 
-output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/output" #adapt 
-output_file = "di_CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5_r12i1p1_v1_day.nc" #adapt 
+output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/" #adapt 
+output_file = "di_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc" #adapt 
 var = "di" #adapt 
 
 with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4') as ds:
@@ -165,7 +165,7 @@ with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4')
 
 "STEP 3: Accumulated Waterbalance (Dk) for the time period k"
 
-Di_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/output/di_CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5_r12i1p1_v1_day.nc" #adapt 
+Di_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/di_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc" #adapt 
 Di_data = Dataset(Di_file, 'r')
 # print(Di_data.variables['Di'].shape) #for a check, but not necessary 
 
@@ -189,8 +189,8 @@ for t in range(all_days):
     print(f"Dk, Time step: {t}/{len(time)}")
             
                
-output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/output/" #adapt 
-output_file = "dk_CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5_r12i1p1_v1_day.nc" #adapt 
+output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/" #adapt 
+output_file = "dk_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc" #adapt 
 var = "dk" #adapt 
 
 "Saving the file "
@@ -236,7 +236,7 @@ d1 = 1.432788
 d2 = 0.189269
 d3 = 0.001308
 
-Dk_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/output/dk_CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5_r12i1p1_v1_day.nc"#adapt
+Dk_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/dk_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc"#adapt
 Dk_data = Dataset(Dk_file, 'r')#############     ADAPT HERE!! 
 
 "Uncomment this if wanting to recalculate the shape/loc/scale of gev"
@@ -287,8 +287,8 @@ for t in range(all_days):
     print(f"spei, Time step: day {t}")
 
 "Saving the spei data"
-output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/output/" #adapt 
-output_file = "spei_CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5_r12i1p1_v1_day.nc" #adapt 
+output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/" #adapt 
+output_file = "spei_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc" #adapt 
 var = "spei" #adapt 
 with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4') as ds:
     time = ds.createDimension('time', all_days)
