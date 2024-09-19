@@ -12,13 +12,13 @@ from netCDF4 import Dataset
 import numpy as np
 
 #C:\03_Capstone\a_publishing\data\CMIP5_EUR-11_KNMI-CNRM-CERFACS-CNRM-CM5_RACMO22E\v2_r1i1p1\tasmin
-temp_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr/pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005_joined.nc"  #adapt 
+temp_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/tasmax/tasmax_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005_joined.nc"  #adapt 
 temp_data = Dataset(temp_file, 'r')
 all_days = 14610
 #14610 past CMIP5
 #16435 past 
 #31411 future 
-var = "pr" #adapt 
+var = "tasmax" #adapt 
 
 "CMIP6"
 # lon_max = 4323286.0
@@ -65,8 +65,8 @@ for t in range(all_days):
 
 
 """Create a new netCDF file"""
-output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr/"  #adapt 
-output_file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005_mm.nc" #adapt 
+output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/tasmax/"  #adapt 
+output_file = "tasmax_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005_degC.nc" #adapt 
 
 with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4') as ds:
     time = ds.createDimension('time', all_days)

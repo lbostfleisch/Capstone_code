@@ -12,7 +12,7 @@ import os
 from netCDF4 import Dataset
 import numpy as np
 
-pr_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/pr/pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_joined.nc"  #adapt
+pr_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr/pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005_joined.nc"  #adapt
 pr_data = Dataset(pr_file, 'r')
 all_days = 14610
 #14610 past CMIP5 
@@ -34,8 +34,8 @@ lon_min, lon_max = -8.0, -1.0
 lon_length = 63
 lat_length = 128
 
-lon = pr_data.variables['rlon'][:]
-lat = pr_data.variables['rlat'][:]
+lon = pr_data.variables['lon'][:]
+lat = pr_data.variables['lat'][:]
 time = pr_data.variables['time'][:]
 nt, nlons, nlats = len(time), len(lon), len(lat)
 Array = np.zeros((all_days, lon_length, lat_length), dtype=np.float32)  
@@ -56,18 +56,18 @@ for t in range(all_days):
 
 
 """Create a new netCDF file"""
-output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_DMI_ICHEC-EC-EARTH_historical_HIRHAM5/r12i1p1_v1/pr/" #adapt
-output_file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_DMI-HIRHAM5_v1_day_joined_mm.nc" #adapt
+output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr/" #adapt
+output_file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005_joined_mm.nc" #adapt
 
 with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4') as ds:
     time = ds.createDimension('time', all_days)
-    lon = ds.createDimension('rlon', lon_length)  #### ISSUE HERE 
-    lat = ds.createDimension('rlat', lat_length) ### ISSUE HERE 
+    lon = ds.createDimension('lon', lon_length)  #### ISSUE HERE 
+    lat = ds.createDimension('lat', lat_length) ### ISSUE HERE 
 
     times = ds.createVariable('time', 'f4', ('time',))
-    lons = ds.createVariable('rlon', 'f4', ('rlon',))  # Corrected variable name
-    lats = ds.createVariable('rlat', 'f4', ('rlat',))  # Corrected variable name
-    value = ds.createVariable(var, 'f4', ('time', 'rlon', 'rlat'))  # Corrected variable names
+    lons = ds.createVariable('lon', 'f4', ('lon',))  # Corrected variable name
+    lats = ds.createVariable('lat', 'f4', ('lat',))  # Corrected variable name
+    value = ds.createVariable(var, 'f4', ('time', 'lon', 'lat'))  # Corrected variable names
 
     value.units = 'Unknown'
 
