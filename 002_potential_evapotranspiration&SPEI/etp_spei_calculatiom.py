@@ -81,136 +81,136 @@ Array_spei = np.zeros((all_days, lon_length, lat_length), dtype=np.float32)
 # #####################################################################################################
 
 "STEP 1: Calculating the ETP"
-for t in range(all_days):
-    for j in range(lon_length):
-        for i in range(lat_length):
-            tmax = tmax_nc.variables['tasmax'][t, j, i]
-            tmin = tmin_nc.variables['tasmin'][t, j, i]
+# for t in range(all_days):
+#     for j in range(lon_length):
+#         for i in range(lat_length):
+#             tmax = tmax_nc.variables['tasmax'][t, j, i]
+#             tmin = tmin_nc.variables['tasmin'][t, j, i]
 
-            # potential evapotransp iration formula McCloud 1955, (Xiang et al., 2020)
-            ta = 0.5 * (tmax + tmin) 
-            etp = 0.254 * (1.07**(1.8 * ta))
-            Array_etp[t, j, i] = etp
-    print(f"ETP Time step: {t}/{all_days}")
-
-
-"""saving the file"""            
-output_directory_etp = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/" #adapt 
-output_file_etp = "etp_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc" #adapt  ##############CONINUE HERE!!!
-var = "etp" #adapt 
+#             # potential evapotransp iration formula McCloud 1955, (Xiang et al., 2020)
+#             ta = 0.5 * (tmax + tmin) 
+#             etp = 0.254 * (1.07**(1.8 * ta))
+#             Array_etp[t, j, i] = etp
+#     print(f"ETP Time step: {t}/{all_days}")
 
 
-with Dataset(os.path.join(output_directory_etp, output_file_etp), 'w', format='NETCDF4') as ds:
-    time = ds.createDimension('time', all_days)
-    lon = ds.createDimension('rlon', lon_length)  
-    lat = ds.createDimension('rlat', lat_length)  
+# """saving the file"""            
+# output_directory_etp = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/" #adapt 
+# output_file_etp = "etp_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc" #adapt  ##############CONINUE HERE!!!
+# var = "etp" #adapt 
 
-    times = ds.createVariable('time', 'f4', ('time',))
-    lons = ds.createVariable('rlon', 'f4', ('rlon',))  
-    lats = ds.createVariable('rlat', 'f4', ('rlat',)) 
-    value = ds.createVariable(var, 'f4', ('time', 'rlon', 'rlat'))  
 
-    value.units = 'Unknown'
+# with Dataset(os.path.join(output_directory_etp, output_file_etp), 'w', format='NETCDF4') as ds:
+#     time = ds.createDimension('time', all_days)
+#     lon = ds.createDimension('rlon', lon_length)  
+#     lat = ds.createDimension('rlat', lat_length)  
 
-    lons[:] = np.linspace(lon_min, lon_max, lon_length)
-    lats[:] = np.linspace(lat_min, lat_max, lat_length)
-    times[:] = np.arange(0, all_days, 1)
+#     times = ds.createVariable('time', 'f4', ('time',))
+#     lons = ds.createVariable('rlon', 'f4', ('rlon',))  
+#     lats = ds.createVariable('rlat', 'f4', ('rlat',)) 
+#     value = ds.createVariable(var, 'f4', ('time', 'rlon', 'rlat'))  
 
-    value[:, :, :] = Array_etp
+#     value.units = 'Unknown'
 
-print("ETP file successfully calculated and saved!")
+#     lons[:] = np.linspace(lon_min, lon_max, lon_length)
+#     lats[:] = np.linspace(lat_min, lat_max, lat_length)
+#     times[:] = np.arange(0, all_days, 1)
+
+#     value[:, :, :] = Array_etp
+
+# print("ETP file successfully calculated and saved!")
 
 # #####################################################################################################
 
 "STEP 2: Calculating the water balance Di"
-pet_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/etp_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc"  #adapt 
-pet_data = Dataset(pet_file, 'r')
+# pet_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/etp_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc"  #adapt 
+# pet_data = Dataset(pet_file, 'r')
 
-for t in range(all_days):  
-    for j in range(lon_length):
-        for i in range(lat_length):
-            pr_var = pr_data.variables['pr'][t, j, i] #adapt 
-            pet_var = pet_data.variables['etp'][t, j, i] ##adapt 
+# for t in range(all_days):  
+#     for j in range(lon_length):
+#         for i in range(lat_length):
+#             pr_var = pr_data.variables['pr'][t, j, i] #adapt 
+#             pet_var = pet_data.variables['etp'][t, j, i] ##adapt 
             
-            #Water balance Di
-            di= pr_var - pet_var
-            Array_di[t, j, i] = di
+#             #Water balance Di
+#             di= pr_var - pet_var
+#             Array_di[t, j, i] = di
 
-    print(f"Di, Time step: {t}/{all_days}")
+#     print(f"Di, Time step: {t}/{all_days}")
 
-output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/" #adapt 
-output_file = "di_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc" #adapt 
-var = "di" #adapt 
+# output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/" #adapt 
+# output_file = "di_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc" #adapt 
+# var = "di" #adapt 
 
-with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4') as ds:
-    time = ds.createDimension('time', all_days)
-    lon = ds.createDimension('rlon', lon_length)  
-    lat = ds.createDimension('rlat', lat_length)  
+# with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4') as ds:
+#     time = ds.createDimension('time', all_days)
+#     lon = ds.createDimension('rlon', lon_length)  
+#     lat = ds.createDimension('rlat', lat_length)  
 
-    times = ds.createVariable('time', 'f4', ('time',))
-    lons = ds.createVariable('rlon', 'f4', ('rlon',))  
-    lats = ds.createVariable('rlat', 'f4', ('rlat',)) 
-    value = ds.createVariable(var, 'f4', ('time', 'rlon', 'rlat'))  
+#     times = ds.createVariable('time', 'f4', ('time',))
+#     lons = ds.createVariable('rlon', 'f4', ('rlon',))  
+#     lats = ds.createVariable('rlat', 'f4', ('rlat',)) 
+#     value = ds.createVariable(var, 'f4', ('time', 'rlon', 'rlat'))  
 
-    value.units = 'Unknown'
+#     value.units = 'Unknown'
 
-    lons[:] = np.linspace(lon_min, lon_max, lon_length)
-    lats[:] = np.linspace(lat_min, lat_max,lat_length)
-    times[:] = np.arange(0, all_days, 1)
+#     lons[:] = np.linspace(lon_min, lon_max, lon_length)
+#     lats[:] = np.linspace(lat_min, lat_max,lat_length)
+#     times[:] = np.arange(0, all_days, 1)
 
-    value[:, :, :] = Array_di
+#     value[:, :, :] = Array_di
 
 
-# ###################################################################################################################
+# # ###################################################################################################################
 
-"STEP 3: Accumulated Waterbalance (Dk) for the time period k"
+# "STEP 3: Accumulated Waterbalance (Dk) for the time period k"
 
-Di_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/di_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc" #adapt 
-Di_data = Dataset(Di_file, 'r')
-# print(Di_data.variables['Di'].shape) #for a check, but not necessary 
+# Di_file = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/di_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc" #adapt 
+# Di_data = Dataset(Di_file, 'r')
+# # print(Di_data.variables['Di'].shape) #for a check, but not necessary 
 
-for t in range(all_days): 
-    for j in range(lon_length):
-        for i in range(lat_length): 
-            if t == 0: 
-                Di_var0 = Di_data.variables['di'][t, j, i] 
-                Dk = Di_var0
-            elif 1 <= t <= 30: 
-                k = t
-                start_1 = 0
-                Di_var1 = Di_data.variables['di'][start_1:k, j, i] 
-                Dk = np.sum(Di_var1)
-            else: 
-                k = 30 #############     ADAPT HERE (if wanting a different k)!!
-                start_2 = t-k
-                Di_var2 = Di_data.variables['di'][start_2:t+1, j, i]
-                Dk = np.sum(Di_var2)
-            Array_dk[t, j, i] = Dk
-    print(f"Dk, Time step: {t}/{len(time)}")
+# for t in range(all_days): 
+#     for j in range(lon_length):
+#         for i in range(lat_length): 
+#             if t == 0: 
+#                 Di_var0 = Di_data.variables['di'][t, j, i] 
+#                 Dk = Di_var0
+#             elif 1 <= t <= 30: 
+#                 k = t
+#                 start_1 = 0
+#                 Di_var1 = Di_data.variables['di'][start_1:k, j, i] 
+#                 Dk = np.sum(Di_var1)
+#             else: 
+#                 k = 30 #############     ADAPT HERE (if wanting a different k)!!
+#                 start_2 = t-k
+#                 Di_var2 = Di_data.variables['di'][start_2:t+1, j, i]
+#                 Dk = np.sum(Di_var2)
+#             Array_dk[t, j, i] = Dk
+#     print(f"Dk, Time step: {t}/{len(time)}")
             
                
-output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/" #adapt 
-output_file = "dk_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc" #adapt 
-var = "dk" #adapt 
+# output_directory = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/" #adapt 
+# output_file = "dk_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc" #adapt 
+# var = "dk" #adapt 
 
-"Saving the file "
-with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4') as ds:
-    time = ds.createDimension('time', all_days)
-    lon = ds.createDimension('rlon', lon_length)  
-    lat = ds.createDimension('rlat', lat_length)  
+# "Saving the file "
+# with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4') as ds:
+#     time = ds.createDimension('time', all_days)
+#     lon = ds.createDimension('rlon', lon_length)  
+#     lat = ds.createDimension('rlat', lat_length)  
 
-    times = ds.createVariable('time', 'f4', ('time',))
-    lons = ds.createVariable('rlon', 'f4', ('rlon',))  
-    lats = ds.createVariable('rlat', 'f4', ('rlat',)) 
-    value = ds.createVariable(var, 'f4', ('time', 'rlon', 'rlat'))  
+#     times = ds.createVariable('time', 'f4', ('time',))
+#     lons = ds.createVariable('rlon', 'f4', ('rlon',))  
+#     lats = ds.createVariable('rlat', 'f4', ('rlat',)) 
+#     value = ds.createVariable(var, 'f4', ('time', 'rlon', 'rlat'))  
 
-    value.units = 'Unknown'
+#     value.units = 'Unknown'
 
-    lons[:] = np.linspace(lon_min, lon_max, lon_length)
-    lats[:] = np.linspace(lat_min, lat_max, lat_length)
-    times[:] = np.arange(0, all_days, 1)
+#     lons[:] = np.linspace(lon_min, lon_max, lon_length)
+#     lats[:] = np.linspace(lat_min, lat_max, lat_length)
+#     times[:] = np.arange(0, all_days, 1)
 
-    value[:, :, :] = Array_dk
+#     value[:, :, :] = Array_dk
 
 
 #########################################################################################################
