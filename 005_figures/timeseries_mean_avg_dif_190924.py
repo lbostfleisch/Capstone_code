@@ -77,17 +77,17 @@ print("dif_obs_CCLM mean:", mean_dif_obs_CCLM)
 
 "plotting average"
 "CMIP5 average values"
-plt.plot(time_model, average_values_RACMO, label='Mean Value RACMO', color = 'lightblue')
-plt.plot(time_model, average_values_HIRHAM, label='Mean Value HIRHAM', color = 'orange') 
-plt.plot(time_model, average_values_CCLM, label='Mean Value CCLM', color = 'purple') 
+# plt.plot(time_model[start_day_CMIP5:14610], average_values_RACMO, label='Mean Value RACMO', color = 'lightblue')
+# plt.plot(time_model[start_day_CMIP5:14610], average_values_HIRHAM, label='Mean Value HIRHAM', color = 'orange') 
+# plt.plot(time_model[start_day_CMIP5:14610], average_values_CCLM, label='Mean Value CCLM', color = 'purple') 
 
 "observational average values"
-plt.plot(time_obs, average_values_obs, label='Mean Value', color = 'grey') 
+# plt.plot(time_obs, average_values_obs, label='Mean Value', color = 'grey') 
 
 "plotting differences"
-plt.plot(time_obs[0:13148], dif_obs_racmo, label='difference Value racmo', color = 'lightgrey')  #13148 is the total amount of overlapping days between the 2 datasets 
-plt.plot(time_obs[0:13148], dif_obs_hirham, label='difference Value hirham', color = 'darkgrey') 
-plt.plot(time_obs[0:13148], dif_obs_CCLM, label='difference Value CCLM', color = 'black') 
+plt.plot(time_obs[0:13148], dif_obs_racmo, label='difference Value racmo', color = 'lightblue')  #13148 is the total amount of overlapping days between the 2 datasets 
+plt.plot(time_obs[0:13148], dif_obs_hirham, label='difference Value hirham', color = 'orange') 
+plt.plot(time_obs[0:13148], dif_obs_CCLM, label='difference Value CCLM', color = 'purple') 
 
 
 plt.xlabel('Time')
@@ -118,8 +118,8 @@ plt.title(f'mean {variable} Value over {len(time_obs)} days')
 # ]
 # plt.legend([line_RACMO, line_HIRHAM, line_obs], custom_labels)
 # plt.legend([line_obs], custom_labels)
-# plt.legend()
-# plt.show()
+plt.legend()
+plt.show()
 
 "plotting minimum"
 'UNCOMMENT if wanting to plot the minimum spei and not average'
