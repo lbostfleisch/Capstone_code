@@ -54,10 +54,10 @@ with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4')
     lon = ds.createDimension('rlon', lon_length)  
     lat = ds.createDimension('rlat', lat_length)  
 
-    pentads = ds.createVariable('pentads', 'f4', ('pentads',))
+    pentads = ds.createVariable('pentad', 'f4', ('pentad',))
     lons = ds.createVariable('rlon', 'f4', ('rlon',))  
     lats = ds.createVariable('rlat', 'f4', ('rlat',)) 
-    pentad_avg = ds.createVariable('pentad_avg', 'f4', ('pentads', 'rlon', 'rlat'))  
+    pentad_avg = ds.createVariable('pentad_avg', 'f4', ('pentad', 'rlon', 'rlat'))  
 
     pentad_avg.units = 'Unknown'
 

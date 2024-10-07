@@ -43,6 +43,11 @@ file_path_CCLM = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_C
 data_CCLM = nc.Dataset(file_path_CCLM, 'r')
 variable_to_average_CCLM = data_CCLM.variables[variable][start_day_CMIP5:14610, :, :]
 
+file_path_pentad = "C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/pentads_spei_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc"
+data_pentad = nc.Dataset(file_path_pentad, 'r')
+variable_to_average_pentad = data_pentad.variables['pentad_avg'][:, :, :] #length of pentad time 2629
+time_pentad = data_pentad['pentad'][:]
+
 file_path_obs  ="C:/03_Capstone/Data/Python_NetCDF_join/Output/run3_140324_CURRENT/obs_spei_1970-2014.nc"
 data_obs = nc.Dataset(file_path_obs, 'r')
 variable_to_average_obs = data_obs.variables[variable][0:end_day_obs, :, :] 
@@ -51,43 +56,47 @@ print(time_obs.shape)
 
 
 "Calculating the mean for each time step over lat and lon"
-average_values_RACMO = np.nanmean(variable_to_average_RACMO, axis=(1, 2))
-min_values_RACMO = np.nanmin(variable_to_average_RACMO, axis=(1, 2))
+# average_values_RACMO = np.nanmean(variable_to_average_RACMO, axis=(1, 2))
+# min_values_RACMO = np.nanmin(variable_to_average_RACMO, axis=(1, 2))
 
-average_values_HIRHAM = np.nanmean(variable_to_average_HIRHAM, axis=(1, 2))
-min_values_HIRHAM = np.nanmin(variable_to_average_HIRHAM, axis=(1, 2))
+# average_values_HIRHAM = np.nanmean(variable_to_average_HIRHAM, axis=(1, 2))
+# min_values_HIRHAM = np.nanmin(variable_to_average_HIRHAM, axis=(1, 2))
 
-average_values_CCLM = np.nanmean(variable_to_average_CCLM, axis=(1,2))
-min_values_CCLM = np.nanmin(variable_to_average_CCLM, axis=(1,2))
+# average_values_CCLM = np.nanmean(variable_to_average_CCLM, axis=(1,2))
+# min_values_CCLM = np.nanmin(variable_to_average_CCLM, axis=(1,2))
+
+average_values_pentad = np.nanmean(variable_to_average_pentad, axis=(1,2))
+# min_values_pentad = np.nanmin(variable_to_average_pentad, axis=(1,2))
 
 average_values_obs = np.nanmean(variable_to_average_obs, axis=(1,2))
 min_values_obs = np.nanmin(variable_to_average_obs, axis=(1,2))
 
-dif_obs_racmo = average_values_obs[:] - average_values_RACMO[:]
-mean_dif_obs_racmo = np.mean(dif_obs_racmo)
-print("dif_obs_racmo mean:", mean_dif_obs_racmo)
+# dif_obs_racmo = average_values_obs[:] - average_values_RACMO[:]
+# mean_dif_obs_racmo = np.mean(dif_obs_racmo)
+# print("dif_obs_racmo mean:", mean_dif_obs_racmo)
 
-dif_obs_hirham = average_values_obs[:] - average_values_HIRHAM[:]
-mean_dif_obs_hirham = np.mean(dif_obs_hirham)
-print("dif_obs_hirham mean:", mean_dif_obs_hirham)
+# dif_obs_hirham = average_values_obs[:] - average_values_HIRHAM[:]
+# mean_dif_obs_hirham = np.mean(dif_obs_hirham)
+# print("dif_obs_hirham mean:", mean_dif_obs_hirham)
 
-dif_obs_CCLM = average_values_obs[:] - average_values_CCLM[:]
-mean_dif_obs_CCLM = np.mean(dif_obs_CCLM)
-print("dif_obs_CCLM mean:", mean_dif_obs_CCLM)
+# dif_obs_CCLM = average_values_obs[:] - average_values_CCLM[:]
+# mean_dif_obs_CCLM = np.mean(dif_obs_CCLM)
+# print("dif_obs_CCLM mean:", mean_dif_obs_CCLM)
 
 "plotting average"
 "CMIP5 average values"
 # plt.plot(time_model[start_day_CMIP5:14610], average_values_RACMO, label='Mean Value RACMO', color = 'lightblue')
 # plt.plot(time_model[start_day_CMIP5:14610], average_values_HIRHAM, label='Mean Value HIRHAM', color = 'orange') 
 # plt.plot(time_model[start_day_CMIP5:14610], average_values_CCLM, label='Mean Value CCLM', color = 'purple') 
+plt.plot(time_pentad, average_values_pentad, label='Mean Value CCLM pentad', color = 'purple') 
 
 "observational average values"
 # plt.plot(time_obs, average_values_obs, label='Mean Value', color = 'grey') 
 
 "plotting differences"
-plt.plot(time_obs[0:13148], dif_obs_racmo, label='difference Value racmo', color = 'lightblue')  #13148 is the total amount of overlapping days between the 2 datasets 
-plt.plot(time_obs[0:13148], dif_obs_hirham, label='difference Value hirham', color = 'orange') 
-plt.plot(time_obs[0:13148], dif_obs_CCLM, label='difference Value CCLM', color = 'purple') 
+# plt.plot(time_obs[0:13148], dif_obs_racmo, label='difference Value racmo', color = 'lightblue')  #13148 is the total amount of overlapping days between the 2 datasets 
+# plt.plot(time_obs[0:13148], dif_obs_hirham, label='difference Value hirham', color = 'orange') 
+# plt.plot(time_obs[0:13148], dif_obs_CCLM, label='difference Value CCLM', color = 'purple') 
 
 
 plt.xlabel('Time')
