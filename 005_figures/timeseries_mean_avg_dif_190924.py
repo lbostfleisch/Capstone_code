@@ -48,9 +48,11 @@ data_pentad = nc.Dataset(file_path_pentad, 'r')
 variable_to_average_pentad = data_pentad.variables['pentad_avg'][:, :, :] #length of pentad time 2629
 time_pentad = data_pentad['pentad'][:]
 
-file_path_obs  ="C:/03_Capstone/Data/Python_NetCDF_join/Output/run3_140324_CURRENT/obs_spei_1970-2014.nc"
+# file_path_obs  ="C:/03_Capstone/Data/Python_NetCDF_join/Output/run3_140324_CURRENT/obs_spei_1970-2014.nc"
+file_path_obs  ="C:/03_Capstone/Data/Python_NetCDF_join/Output/run3_140324_CURRENT/one_grid_cell_obs_spei_1970-2014.nc"
 data_obs = nc.Dataset(file_path_obs, 'r')
-variable_to_average_obs = data_obs.variables[variable][0:end_day_obs, :, :] 
+variable_to_average_onegrid = data_obs.variables[variable]
+# variable_to_average_obs = data_obs.variables[variable][0:end_day_obs, :, :] 
 time_obs = data_obs.variables['time'][:]
 print(time_obs.shape)
 
@@ -65,11 +67,11 @@ print(time_obs.shape)
 # average_values_CCLM = np.nanmean(variable_to_average_CCLM, axis=(1,2))
 # min_values_CCLM = np.nanmin(variable_to_average_CCLM, axis=(1,2))
 
-average_values_pentad = np.nanmean(variable_to_average_pentad, axis=(1,2))
+# average_values_pentad = np.nanmean(variable_to_average_pentad, axis=(1,2))
 # min_values_pentad = np.nanmin(variable_to_average_pentad, axis=(1,2))
 
-average_values_obs = np.nanmean(variable_to_average_obs, axis=(1,2))
-min_values_obs = np.nanmin(variable_to_average_obs, axis=(1,2))
+# average_values_obs = np.nanmean(variable_to_average_obs, axis=(1,2))
+# min_values_obs = np.nanmin(variable_to_average_obs, axis=(1,2))
 
 # dif_obs_racmo = average_values_obs[:] - average_values_RACMO[:]
 # mean_dif_obs_racmo = np.mean(dif_obs_racmo)
@@ -88,10 +90,11 @@ min_values_obs = np.nanmin(variable_to_average_obs, axis=(1,2))
 # plt.plot(time_model[start_day_CMIP5:14610], average_values_RACMO, label='Mean Value RACMO', color = 'lightblue')
 # plt.plot(time_model[start_day_CMIP5:14610], average_values_HIRHAM, label='Mean Value HIRHAM', color = 'orange') 
 # plt.plot(time_model[start_day_CMIP5:14610], average_values_CCLM, label='Mean Value CCLM', color = 'purple') 
-plt.plot(time_pentad, average_values_pentad, label='Mean Value CCLM pentad', color = 'purple') 
+# plt.plot(time_pentad, average_values_pentad, label='Mean Value CCLM pentad', color = 'purple') 
 
 "observational average values"
 # plt.plot(time_obs, average_values_obs, label='Mean Value', color = 'grey') 
+plt.plot(time_obs, variable_to_average_onegrid, label='Mean Value', color = 'grey') 
 
 "plotting differences"
 # plt.plot(time_obs[0:13148], dif_obs_racmo, label='difference Value racmo', color = 'lightblue')  #13148 is the total amount of overlapping days between the 2 datasets 

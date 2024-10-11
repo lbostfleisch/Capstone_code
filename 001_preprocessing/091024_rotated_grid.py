@@ -97,21 +97,21 @@ print(rlon_file.shape[0])
 all_days = 14610
 # Array_r = np.zeros((all_days, lon_length, lat_length), dtype=np.float32)  
 
-"order of the files is wrong I believe "
-# for t in range(len(time_file)):
-#     for i in range(rlon_file.shape[0]):
-#         for j in range(rlat_file.shape[0]):
+
+"actual"
+# for i in range(rlon_file.shape[0]):
+#     for j in range(rlat_file.shape[0]):
+#         for t in range(len(time_file)):
 #             geo_lon[i], geo_lat[j] = rotated_to_geographic(rlon_file[i], rlat_file[j])
 #             # Array_r[t, j, i] = geo_lon[i], geo_lat[j]
-#     print(t)
+#     print(f"lat: {j}, lon: {i}, time: {t}")
 
-
+"test without time => apparently can also use this one: why not having to loop over time?"
 for i in range(rlon_file.shape[0]):
     for j in range(rlat_file.shape[0]):
-        for t in range(len(time_file)):
-            geo_lon[i], geo_lat[j] = rotated_to_geographic(rlon_file[i], rlat_file[j])
-            # Array_r[t, j, i] = geo_lon[i], geo_lat[j]
-    print(f"lat: {j}, lon: {i}, time: {t}")
+        geo_lon[i], geo_lat[j] = rotated_to_geographic(rlon_file[i], rlat_file[j])
+        # Array_r[t, j, i] = geo_lon[i], geo_lat[j]
+    print(f"lat: {j}, lon: {i}")
 
 
 output_nc_file = 'C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/output/reprojected_WGS_spei_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005.nc'
@@ -121,21 +121,29 @@ new_dataset = Dataset(output_nc_file, 'w', format='NETCDF4')
 time_dim = new_dataset.createDimension('time', len(time_file))
 lat_dim = new_dataset.createDimension('lat', geo_lat.shape[0])
 lon_dim = new_dataset.createDimension('lon', geo_lon.shape[0])
-time_dim = new_dataset.createDimension('time', )
+
 # Create new variables for geographic coordinates
 time_var = new_dataset.createVariable('time', np.float64, ('time',))
 # lat_var = new_dataset.createVariable('lat', np.float64, ('lat',))
 # lon_var = new_dataset.createVariable('lon', np.float64, ('lon',))
-geographic_lon_var = new_dataset.createVariable('lon', 'f4', ('lon', 'lat'))
-geographic_lat_var = new_dataset.createVariable('lat', 'f4', ('lon', 'lat'))
+# geographic_lon_var = new_dataset.createVariable('lon', 'f4', ('lon', 'lat')) #took this out because it should not include lat 
+geographic_lon_var = new_dataset.createVariable('lon', 'f4', ('lon',))  
+geographic_lat_var = new_dataset.createVariable('lat', 'f4', ('lat'))
+# geographic_lat_var = new_dataset.createVariable('lat', 'f4', ('lon', 'lat'))
 data_var_new = new_dataset.createVariable('spei', np.float64, ('time', 'lon', 'lat'))  # New variable for data
 
 
 # Assign the projected geographic coordinates to the new variables
 time_var[:] = time_file
+print(geographic_lat_var.shape)
+print(geo_lon.shape)
+
 geographic_lon_var[:] = geo_lon
 geographic_lat_var[:] = geo_lat
 data_var_new[:, :, :] = spei_file 
+
+# lons[:] = np.linspace(lon_min, lon_max, lon_length)
+# lats[:] = np.linspace(lat_min, lat_max,lat_length)
 
 new_dataset.close()
 print(f"New NetCDF file created: {output_nc_file}")
