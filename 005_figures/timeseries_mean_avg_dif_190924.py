@@ -52,8 +52,11 @@ time_pentad = data_pentad['pentad'][:]
 file_path_obs  ="C:/03_Capstone/Data/Python_NetCDF_join/Output/run3_140324_CURRENT/one_grid_cell_obs_spei_1970-2014.nc"
 data_obs = nc.Dataset(file_path_obs, 'r')
 variable_to_average_onegrid = data_obs.variables[variable]
+print(f"data obs shape: {variable_to_average_onegrid.shape}")
 # variable_to_average_obs = data_obs.variables[variable][0:end_day_obs, :, :] 
-time_obs = data_obs.variables['time'][:]
+# variable_to_average_obs = data_obs.variables[variable][:, :, :] #no time restriction 
+# time_obs = data_obs.variables['time'][:]
+time_obs = data_obs.variables['time']
 print(time_obs.shape)
 
 

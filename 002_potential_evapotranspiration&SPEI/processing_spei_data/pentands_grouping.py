@@ -72,7 +72,7 @@ for j in range(lon_length):
 
 "observational data"
 output_directory = "C:/03_Capstone/Data/Python_NetCDF_join/Output/run3_140324_CURRENT/"
-output_file = "pentads_obs_spei_1970-2014nc"
+output_file = "pentads_obs_spei_1970-2014.nc"
 
 # with Dataset(os.path.join(output_directory, output_file), 'w', format='NETCDF4') as ds:
 #     pentad = ds.createDimension('pentad', num_pentads)

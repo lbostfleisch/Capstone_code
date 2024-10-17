@@ -5,7 +5,7 @@ File to extract 1 grid cell from a netcdf file
 import xarray as xr 
 import matplotlib.pyplot as plt
 
-file_path = "C:/03_Capstone/Data/Python_NetCDF_join/Output/run3_140324_CURRENT/obs_spei_1970-2014.nc"
+file_path = "C:/03_Capstone/Data/Future/ssp585/02_run2_160324/ssp585_spei_2015-2100_obsgevpara.nc"
 ds = xr.open_dataset(file_path)
 
 min_lon = ds['lon'].isel(lon=0).values
@@ -18,14 +18,14 @@ variable_name = 'spei'
 print("Available latitude values:", ds['lat'].values)
 print("Available longitude values:", ds['lon'].values)
 
-lon_value = 4033112.2
-lat_value = 2646871.8
+lon_value = 4133112.2
+lat_value = 2746871.8
 
 variable_data = ds[variable_name]
 one_grid_cell = variable_data.sel(lat=lat_value, lon=lon_value, method='nearest')
 
 
-output_file_path = 'C:/03_Capstone/Data/Python_NetCDF_join/Output/run3_140324_CURRENT/one_grid_cell_obs_spei_1970-2014.nc'
+output_file_path = 'C:/03_Capstone/Data/Future/ssp585/02_run2_160324/one_grid_cell_2_ssp585_spei_2015-2100_obsgevpara.nc'
 
 one_grid_cell.to_dataset(name='spei').to_netcdf(output_file_path)
 
