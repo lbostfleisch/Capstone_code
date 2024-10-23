@@ -63,6 +63,16 @@ for j in range(lon_length):
             print(spei_var)
             Array_pentad[p, j, i] = np.mean(spei_var)
 
+            spei_min = float('inf')
+            spei_max = float('-inf')
+
+            for m in range(5): 
+                if spei_var < spei_min: 
+                    spei_var ==  spei_min
+                if spei_var > spei_max: 
+                    spei_var == spei_max
+            
+
             pentad_indices[start_pentad:end_pentad] = p
         print(f'lon: {j}, lat: {i}')
 

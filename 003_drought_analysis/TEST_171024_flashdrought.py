@@ -46,11 +46,11 @@ spei = spei_data.variables['spei'][:]
 # all_days = end_day_CMIP5 - start_day_CMIP5
 # num_pentads = all_days // 5
 
-"for the past CMIP6 and observational"
-len_days = 16435 
-end_day_sub = (9 * 365 + 2) #because the observational data set goes until 2014 (not 2004)
-all_days = len_days - end_day_sub
-num_pentads = all_days // 5 
+# "for the past CMIP6 and observational"
+# len_days = 16435 
+# end_day_sub = (9 * 365 + 2) #because the observational data set goes until 2014 (not 2004)
+# all_days = len_days - end_day_sub
+# num_pentads = all_days // 5 
 
 # maybe making list with the stored days and their corresponding pentad 
 
