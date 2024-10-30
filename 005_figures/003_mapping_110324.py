@@ -11,13 +11,15 @@ import numpy as np
 # File information
 # C:\03_Capstone\a_publishing\data\CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17\r12i1p1_v1\pr\rotated_files
 drive = "C:/"
-directory = "03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr/original_files/"
-# directory = "03_Capstone/Data/Future/historical/pr_his/"
-file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_19660101-19701231.nc"
-# file = "his_pr_mm_1970-2014_EPSG3034.nc"
+directory = "03_Capstone/Capstone_code/testing/"
+# directory = "03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr/original_files/"
+file = "test_rot.nc"
+# file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_19660101-19701231.nc"
 # C:/03_Capstone/Data/Downscale/downscale_test_040424.nc
-variable_name = 'pr'
+variable_name = 'tasmin'
 file_path = os.path.join(drive, directory, file)
+
+file_path = 'C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/tasmin/tasmin_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_1966-2005_degC.nc'
 
 # Open the NetCDF dataset
 data = xr.open_dataset(file_path)
@@ -39,13 +41,13 @@ variable = data[variable_name].isel(time=time_index)
 
 print(variable.shape)
 
-print(f"Min Latitude: {variable.lat.min().values}, Max Latitude: {variable.lat.max().values}")
-print(f"Min Longitude: {variable.lon.min().values}, Max Longitude: {variable.lon.max().values}")
+print(f"Min Latitude: {variable.rlat.min().values}, Max Latitude: {variable.rlat.max().values}")
+print(f"Min Longitude: {variable.rlon.min().values}, Max Longitude: {variable.rlon.max().values}")
 
 # Plot the variable
 fig, ax = plt.subplots()
 # variable.plot.imshow(x="lon", y='lat', ax=ax)
-variable.plot.imshow(x="lat", y='lon', ax=ax)
+variable.plot.imshow(x="rlat", y='rlon', ax=ax)
 
 # variable.plot(ax=ax)
 

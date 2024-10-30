@@ -32,15 +32,15 @@ print(f"rotated lon max: {rlon_file[len(rlon_file)-1]}")
 
 lat0 = 198 #rotated pole from https://cordex.org/domains/cordex-region-euro-cordex/
 lon0 = 39.25 #rotated pole from https://cordex.org/domains/cordex-region-euro-cordex/
-# theta = -(90 + lat0) #formula from https://gis.stackexchange.com/questions/10808/manually-transforming-rotated-lat-lon-to-regular-lat-lon 
+theta = -(90 + lat0) #formula from https://gis.stackexchange.com/questions/10808/manually-transforming-rotated-lat-lon-to-regular-lat-lon 
 #added
 Nx = 106 #added # Number of columns (longitude direction)
 Ny = 103 #added 
-theta = -(90 + lon0)
+# theta = -(90 + lon0)
 print(f"rotation around y axis: {theta}")
-# phi = -lon0 #formula from https://gis.stackexchange.com/questions/10808/manually-transforming-rotated-lat-lon-to-regular-lat-lon 
+phi = -lon0 #formula from https://gis.stackexchange.com/questions/10808/manually-transforming-rotated-lat-lon-to-regular-lat-lon 
 #added 
-phi = -lat0
+# phi = -lat0
 print(f"rotation around z axis: {phi}")
 
 "converting to radians (x,y,z)"
@@ -118,19 +118,19 @@ all_days = 14610
 #     print(f"lat: {j}, lon: {i}, time: {t}")
 
 "test without time => apparently can also use this one: why not having to loop over time?"
-# for i in range(rlon_file.shape[0]):
-#     for j in range(rlat_file.shape[0]):
-#         geo_lon[i], geo_lat[j] = rotated_to_geographic(rlon_file[i], rlat_file[j])
-#         # Array_r[t, j, i] = geo_lon[i], geo_lat[j]
-#     print(f"lat: {j}, lon: {i}")
-
-for i in range(Ny):
-    for j in range(Nx):
+for i in range(rlon_file.shape[0]):
+    for j in range(rlat_file.shape[0]):
         geo_lon[i], geo_lat[j] = rotated_to_geographic(rlon_file[i], rlat_file[j])
-        # print(f"Converted: Rlon={rlon_file[i]}, Rlat={rlat_file[j]} => Geo Lon={geo_lon[i]}, Geo Lat={geo_lat[j]}")
+        # Array_r[t, j, i] = geo_lon[i], geo_lat[j]
+    print(f"lat: {j}, lon: {i}")
+
+# for i in range(Ny):
+#     for j in range(Nx):
+#         geo_lon[i], geo_lat[j] = rotated_to_geographic(rlon_file[i], rlat_file[j])
+#         # print(f"Converted: Rlon={rlon_file[i]}, Rlat={rlat_file[j]} => Geo Lon={geo_lon[i]}, Geo Lat={geo_lat[j]}")
 
 
-output_nc_file = 'C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr/rotated_files/221024_reprojection_test_switch-theta-phi.nc'
+output_nc_file = 'C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr/rotated_files/231024_reprojection_pr_original_theta_phi.nc'
 new_dataset = Dataset(output_nc_file, 'w', format='NETCDF4')
 
 # Define dimensions (assuming the same dimensions as in the original file)
@@ -162,27 +162,24 @@ data_var_new[:, :, :] = var_file
 # lons[:] = np.linspace(lon_min, lon_max, lon_length)
 # lats[:] = np.linspace(lat_min, lat_max,lat_length)
 
-new_dataset.close()
+# new_dataset.close()
 print(f"New NetCDF file created: {output_nc_file}")
 
 
 """plotting """
 
-my_variable = var_file[0, :, :]  # Replace 0 with the index of the desired time slice if needed
-
 # Create a figure
-plt.figure(figsize=(12, 6))
+time_step = 0
+data_at_time = data[time_step, :, :]  # Slicing the data for the first time step
 
-# Use pcolormesh to plot the variable against geographic coordinates
-plt.imshow(my_variable, extent=[geographic_lon_var[0], geographic_lon_var[-1], geographic_lat_var[0], geographic_lat_var[-1]],
-           aspect='auto', cmap='viridis')
-# Add a color bar
-plt.colorbar(label='My Variable')  # Adjust the label according to what the variable represents
-
-# Add title and labels
-plt.title('Visualization of My Variable in Geographic Coordinates')
-plt.xlabel('Geographic Longitude')
-plt.ylabel('Geographic Latitude')
+# Plotting the data (e.g., using contour or pcolormesh)
+plt.figure(figsize=(10, 6))
+plt.contourf(geographic_lon_var, geographic_lat_var, data_at_time, cmap='viridis')
+plt.colorbar(label='Data Value')
+plt.xlabel('Longitude')
+plt.ylabel('Latitude')
+# plt.title(f'Data at Time = {time[time_step]}')
 
 # Show the plot
 plt.show()
+

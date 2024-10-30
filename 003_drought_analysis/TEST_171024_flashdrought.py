@@ -23,16 +23,16 @@ file_name = "one_grid_cell_2_ssp585_spei_2015-2100_obsgevpara.nc"
 file_path = os.path.join("C:/03_Capstone/Data/Future/ssp585/02_run2_160324/", file_name)
 spei_data = Dataset(file_path, 'r')
 
-# lon = spei_data.variables['lon'][:]
-# lat = spei_data.variables['lat'][:]
+lon = spei_data.variables['lon'][:]
+lat = spei_data.variables['lat'][:]
 time = spei_data.variables['time'][:]
 spei = spei_data.variables['spei'][:]
 
 "For the CMIP5 data"
-# lat_min, lat_max = -6.0, 8.0
-# lon_min, lon_max = -8.0, -1.0
-# lon_length = 63
-# lat_length = 128
+lat_min, lat_max = -6.0, 8.0
+lon_min, lon_max = -8.0, -1.0
+lon_length = 63
+lat_length = 128
 
 "For the CMIP6 and observational data"
 # lon_max, lon_min = 4323286.0, 4028021.5
