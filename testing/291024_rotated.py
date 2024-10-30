@@ -45,6 +45,7 @@ geo_grid = rot_grid.transform()  # This returns a new Grid instance with regular
 
 # Get transformed geographic coordinates
 lon_geo, lat_geo = geo_grid.get_coordinates()
+# test
 
 print("Shape of transformed longitude:", lon_geo.shape)
 print("Shape of transformed latitude:", lat_geo.shape)
