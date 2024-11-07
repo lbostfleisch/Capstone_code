@@ -5,6 +5,7 @@ from netCDF4 import Dataset
 
 # Open the NetCDF file (replace 'your_file.nc' with your actual file path)
 file_path = 'C:/03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr/original_files/pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_19660101-19701231.nc'  # Replace with your actual file path
+# file_path = 'C:/03_Capstone/a_publishing/data/test_files_rot/1107_test_rot.nc'
 nc_file = Dataset(file_path, 'r')
 
 # Extract dimensions
