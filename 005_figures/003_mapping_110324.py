@@ -13,7 +13,7 @@ import numpy as np
 drive = "C:/"
 directory = "03_Capstone/a_publishing/data/test_files_rot/"
 # directory = "03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr/original_files/"
-file = "1107_type3_test_rot.nc"
+file = "1107_type4_test_rot.nc"
 # file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_19660101-19701231.nc"
 # C:/03_Capstone/Data/Downscale/downscale_test_040424.nc
 variable_name = 'pr'
@@ -28,7 +28,7 @@ data = xr.open_dataset(file_path)
 
 ########################################################################
 "To plot when the data has time, lon, lat"
-time_index = 1000
+time_index = 0
 
 # 16435 past 
 # 31411 future 

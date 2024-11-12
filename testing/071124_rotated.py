@@ -25,6 +25,7 @@ dataset = nc.Dataset(file_path)
 rot_lon_arr = dataset.variables['rlon'][:]
 rot_lat_arr = dataset.variables['rlat'][:]
 data_variable = dataset.variables['pr'][:]  # Replace 'data_variable' with your actual variable name
+print("data variabl",data_variable.shape)
 
 
 "try 2 "
@@ -77,9 +78,12 @@ output_file_path = 'C:/03_Capstone/a_publishing/data/test_files_rot/1107_type4_t
 all_days = 1826
 lon_len = 424
 lat_len =  412
-Array = np.zeros((all_days, lon_len, lat_len), dtype=np.float32)  
+Array = np.zeros((all_days, lat_len, lon_len), dtype=np.float32)  
 lon_min, lon_max = np.min(lon_geo), np.max(lon_geo)
 lat_min, lat_max = np.max(lat_geo), np.max(lat_geo)
+Array[:, :, :] = data_variable[:all_days, :lat_len, :lon_len]
+# Array[:, :, :] = data_variable[:, :, :]
+
 
 with Dataset(output_file_path, 'w', format='NETCDF4') as ds:
     time = ds.createDimension('time', all_days)
@@ -89,7 +93,7 @@ with Dataset(output_file_path, 'w', format='NETCDF4') as ds:
     times = ds.createVariable('time', 'f4', ('time',))
     lons = ds.createVariable('lon', 'f4', ('lon',))  # Corrected variable name
     lats = ds.createVariable('lat', 'f4', ('lat',))  # Corrected variable name
-    value = ds.createVariable('pr', 'f4', ('time', 'lon', 'lat'))  # Corrected variable names
+    value = ds.createVariable('pr', 'f4', ('time', 'lat', 'lon'))  # Corrected variable names
 
     value.units = 'Unknown'
 
