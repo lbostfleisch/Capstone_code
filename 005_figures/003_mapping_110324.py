@@ -13,7 +13,7 @@ import numpy as np
 drive = "C:/"
 directory = "03_Capstone/a_publishing/data/test_files_rot/"
 # directory = "03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr/original_files/"
-file = "1107_type4_test_rot.nc"
+file = "1211_type2_test_rot.nc"
 # file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_19660101-19701231.nc"
 # C:/03_Capstone/Data/Downscale/downscale_test_040424.nc
 variable_name = 'pr'
@@ -47,9 +47,9 @@ print(f"Min Longitude: {variable.lon.min().values}, Max Longitude: {variable.lon
 # Plot the variable
 fig, ax = plt.subplots()
 # variable.plot.imshow(x="lon", y='lat', ax=ax)
-variable.plot.imshow(x="lat", y='lon', ax=ax)
+# variable.plot.imshow(x="lat", y='lon', ax=ax)
 
-# variable.plot(ax=ax)
+variable.plot(ax=ax)
 
 
 # Customize the plot if needed
