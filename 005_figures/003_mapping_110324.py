@@ -13,9 +13,17 @@ import numpy as np
 drive = "C:/"
 directory = "03_Capstone/a_publishing/data/test_files_rot/"
 # directory = "03_Capstone/a_publishing/data/CMIP5_EUR-11_ICHEC-EC-EARTH_CLMcom-CCLM4-8-17/r12i1p1_v1/pr/original_files/"
-file = "1211_type2_test_rot.nc"
-# file = "pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_19660101-19701231.nc"
+# directory = '03_Capstone/Data/Future/ssp126/tasmax/'
+file = "1911_type2_test_rot.nc"
+# file = 'pr_EUR-11_ICHEC-EC-EARTH_historical_r12i1p1_CLMcom-CCLM4-8-17_v1_day_19660101-19701231.nc'
+# file = "cropped2_tasmax_day_CNRM-CM6-1-HR_ssp126_r1i1p1f2_gr_0.nc"
 # C:/03_Capstone/Data/Downscale/downscale_test_040424.nc
+
+"other drive"
+# drive = 'D:/'
+# directory = 'Luca_Capstone/data/cmip6_ssp126/tasmax/big_files/'
+# file = 'tasmax_day_CNRM-CM6-1-HR_ssp126_r1i1p1f2_gr_20150101-20641231.nc'
+
 variable_name = 'pr'
 file_path = os.path.join(drive, directory, file)
 
